@@ -1,21 +1,30 @@
 // userModel.js
 const pool = require("../services/db");
 
-module.exports.insertSingle = (data, callback) => {
-  const SQL_STATEMENT = `
-    INSERT INTO User (username, email)
-    VALUES (?, ?);
-  `;
-  const VALUES = [data.username, data.email];
+module.exports.insertNewUser = (data, callback) =>
+{
+    const SQLSTATMENT = `
+    INSERT INTO User (username, email, password)
+    VALUES (?, ? , ? );
+   
+   
+    `;
+const VALUES = [data.username, data.email, data.password];
 
-  pool.query(SQL_STATEMENT, VALUES, callback);
-};
+pool.query(SQLSTATMENT, VALUES, callback);
+}
+
 
 module.exports.checkExistingEmail = (email, callback) => {
-  pool.query('SELECT * FROM User WHERE email = ?', [email], callback);
+  const query = 'SELECT * FROM User WHERE email = ?';
+  pool.query(query, [email], callback);
 };
 
-
+// Method to check if a username already exists
+module.exports.checkExistingUsername = (username, callback) => {
+  const query = 'SELECT * FROM User WHERE username = ?';
+  pool.query(query, [username], callback);
+};
 
 module.exports.selectAll = (callback) => {
   const SQL_STATEMENT = `
@@ -26,6 +35,16 @@ module.exports.selectAll = (callback) => {
 };
 
 
+module.exports.getUserByUsername = (username, callback) => {
+  const SQL_STATEMENT = `
+    SELECT * FROM User
+    WHERE username = ?;
+  `;
+  const VALUES = [username];
+
+  pool.query(SQL_STATEMENT, VALUES,callback) 
+    
+  };
 
 module.exports.getUserDetails = (userId, callback) => {
   const SQL_STATEMENT = `

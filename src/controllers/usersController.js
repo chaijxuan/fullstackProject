@@ -1,10 +1,37 @@
-// userController.js
-
 // Import the userModel module
-const userModel = require("../models/userModel");
+const model = require("../models/userModel");
 
-// Controller function to create a new user
-module.exports.createUser = (req, res) => {
+module.exports.register = (req, res, next) => {
+  // Extract the new user data from the request body
+  const { username, email } = req.body;
+
+  // Insert the new user into the database
+  model.insertNewUser({ username, email, password: req.body.password }, (createUserError, createUserResult) => {
+      if (createUserError || !createUserResult.insertId) {
+          console.error("Error creating user:", createUserError);
+          return res.status(500).send({ error: 'Internal Server Error' });
+      }
+
+      // Construct the new user object
+      const newUser = {
+          user_id: createUserResult.insertId,
+          username,
+          email,
+      };
+
+      // Send the successful response with the newly created user
+      res.status(201).send({ message: 'User created successfully', user: newUser });
+      next(); // Move this line inside the callback to ensure it is called after the database operation.
+  });
+};
+
+
+
+//////////////////////////////////////////////////////
+// MIDDLEWARE FOR CHECK IF USERNAME OR EMAIL EXISTS
+//////////////////////////////////////////////////////
+// Middleware for checking if username or email exists
+module.exports.checkUsernameOrEmailExist = (req, res, next) => {
   // Extract username and email from the request body
   const { username, email } = req.body;
 
@@ -15,7 +42,7 @@ module.exports.createUser = (req, res) => {
 
   try {
     // Check for existing email in the database
-    userModel.checkExistingEmail(email, (checkEmailError, checkEmailResult) => {
+    model.checkExistingEmail(email, (checkEmailError, checkEmailResult) => {
       if (checkEmailError) {
         console.error("Error checking existing email:", checkEmailError);
         return res.status(500).send({ error: 'Internal Server Error' });
@@ -28,22 +55,25 @@ module.exports.createUser = (req, res) => {
         return res.status(409).send({ error: 'Email already exists' });
       }
 
-      // Insert the new user into the database
-      userModel.insertSingle({ username, email }, (createUserError, createUserResult) => {
-        if (createUserError || !createUserResult.insertId) {
-          console.error("Error creating user:", createUserError);
+      // Check for existing username in the database
+      model.checkExistingUsername(username, (checkUsernameError, checkUsernameResult) => {
+        if (checkUsernameError) {
+          console.error("Error checking existing username:", checkUsernameError);
           return res.status(500).send({ error: 'Internal Server Error' });
         }
 
-        // Construct the new user object
-        const newUser = {
-          user_id: createUserResult.insertId,
-          username,
-          email,
-        };
+        console.log("Existing usernames:", checkUsernameResult);
 
-        // Send the successful response with the newly created user
-        res.status(201).send({ message: 'User created successfully', user: newUser });
+        // If username already exists, return a conflict response
+        if (checkUsernameResult.length > 0) {
+          return res.status(409).send({ error: 'Username already exists' });
+        }
+        
+        // Save email and username in res.locals
+        res.locals.email = email;
+        res.locals.username = username;
+        
+        next();
       });
     });
   } catch (error) {
@@ -51,6 +81,8 @@ module.exports.createUser = (req, res) => {
     res.status(500).send({ error: 'Internal Server Error' });
   }
 };
+
+
 
 // Controller function to retrieve all users
 module.exports.readAllUser = (req, res, next) => {
@@ -69,31 +101,35 @@ module.exports.readAllUser = (req, res, next) => {
 
 
 
-// Controller function to retrieve user details by ID
-module.exports.getUserById = (req, res) => {
-  const userId = req.params.user_id;
 
-  // Call the getUserDetails method from userModel
-  userModel.getUserDetails(userId, (error, results) => {
-    if (error) {
-      console.error("Error retrieving user details:", error);
-      res.status(500).json({ error: 'Internal Server Error' });
-    } else if (results && hasNullFields(results)) {
-      res.status(404).json({ message: 'User not found' });
-    } else {
-      res.status(200).json(results);
-    }
+module.exports.login = (req, res, next) => {
+  const { username, password } = req.body;
+
+  // Check if username or password is missing
+  if (!username || !password) {
+      return res.status(400).json({ error: 'Missing username or password' });
+  }
+
+  // Query the database to find the user with the provided username
+  model.getUserByUsername(username, (error, user) => {
+      if (error) {
+          console.error("Error retrieving user:", error);
+          return res.status(500).json({ error: 'Internal Server Error' });
+      }
+
+      // Check if the user exists
+      if (!user) {
+          return res.status(404).json({ error: 'User not found' });
+      }
+
+      // Set the hashed password in res.locals.hash
+      res.locals.hash = user.password;
+
+      // Move to the next middleware
+      next();
   });
 };
-//function to check null field 
-function hasNullFields(obj) {
-  for (const key in obj) {
-    if (obj[key] === null) {
-      return true;
-    }
-  }
-  return false;
-}
+
 
 
 

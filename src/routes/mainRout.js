@@ -3,6 +3,7 @@
 const express = require('express');
 const router = express.Router();
 
+
 const usersRout = require('./usersRout'); // Import usersRout module
 const taskRout= require('./tasksRout');
 const taskProgressRout= require('./task_progressRout');
@@ -11,6 +12,14 @@ router.use('/users', usersRout);
 router.use('/tasks', taskRout);
 router.use('/taskprogress', taskProgressRout);
 
+const jwtMiddleware=require('../middleware/jwtMiddleware');
+const bcryptMiddleware=require('../middleware/bcryptMiddleware');
+const userController=require('../controllers/usersController')
+
+router.post("/register", userController.checkUsernameOrEmailExist, bcryptMiddleware.hashPassword, userController.register, jwtMiddleware.generateToken, jwtMiddleware.sendToken);
+
+router.post("/login", userController.login, bcryptMiddleware.comparePassword, jwtMiddleware.generateToken, jwtMiddleware.sendToken);
+/*************************************************************************************** */
 
 const playerRout = require('./playerRout'); // Import usersRout module
 const petRout=require('./petRout');
