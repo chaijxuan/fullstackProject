@@ -95,7 +95,7 @@ module.exports.readAllUser = (req, res, next) => {
   };
 
   // Call the selectAll method from userModel
-  userModel.selectAll(callback);
+  model.selectAll(callback);
 };
 
 
@@ -210,3 +210,30 @@ module.exports.deleteUserById = (req, res, next) => {
   // Call the deleteById method from userModel
   userModel.deleteById(data, callback);
 };
+
+
+// Controller function to retrieve user details by ID
+module.exports.getUserById = (req, res) => {
+  const userId = req.params.user_id;
+
+  // Call the getUserDetails method from userModel
+  model.getUserDetails(userId, (error, results) => {
+    if (error) {
+      console.error("Error retrieving user details:", error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    } else if (results && hasNullFields(results)) {
+      res.status(404).json({ message: 'User not found' });
+    } else {
+      res.status(200).json(results);
+    }
+  });
+};
+//function to check null field 
+function hasNullFields(obj) {
+  for (const key in obj) {
+    if (obj[key] === null) {
+      return true;
+    }
+  }
+  return false;
+}
