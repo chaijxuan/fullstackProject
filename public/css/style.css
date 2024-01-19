@@ -64,4 +64,6 @@ h1 {
   }
 }
 
-/* Add your custom styles below this line */
+.card-text.no-wrap {
+  white-space: nowrap;
+}

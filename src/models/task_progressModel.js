@@ -62,3 +62,16 @@ module.exports.deleteById = (data, callback) => {
     pool.query(SQL_STATEMENT, VALUES, callback);
   };
   
+
+// Model function to get task progress by user ID
+module.exports.getTaskProgressByUserId = (userId, callback) => {
+    const SQL_STATEMENT = `
+        SELECT *
+        FROM TaskProgress
+        WHERE user_id = ?;
+    `;
+
+    pool.query(SQL_STATEMENT, [userId], (error, results, fields) => {
+        callback(error, results);
+    });
+};

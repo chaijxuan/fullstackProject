@@ -83,13 +83,42 @@ module.exports.checkUsernameOrEmailExist = (req, res, next) => {
 
 
 
-// Controller function to retrieve all users
+// Function to update total points for a user
+const updateUserTotalPoints = (userId, callback) => {
+  model.updateUserTotalPoints(userId, (error, results) => {
+    if (error) {
+      console.error("Error updating total points:", error);
+      // Handle the error as needed
+      callback(error, null);
+    } else {
+      console.log("Total points updated successfully");
+      // Handle the success as needed
+      callback(null, results);
+    }
+  });
+};
+
+// Controller function to retrieve all users and update total points
 module.exports.readAllUser = (req, res, next) => {
   const callback = (error, results, fields) => {
     if (error) {
       console.error("Error readAllUser:", error);
       res.status(500).json(error);
     } else {
+      // Assuming results contains an array of user data
+      // Iterate through the users and update total points for each
+      results.forEach((user) => {
+        updateUserTotalPoints(user.user_id, (updateError, updateResults) => {
+          // Handle the update result or error if needed
+          if (updateError) {
+            console.error("Error updating total points for user:", user.user_id, updateError);
+          } else {
+            console.log("Total points updated successfully for user:", user.user_id);
+          }
+        });
+      });
+
+      // Send the user data as the response
       res.status(200).json(results);
     }
   };
@@ -97,7 +126,6 @@ module.exports.readAllUser = (req, res, next) => {
   // Call the selectAll method from userModel
   model.selectAll(callback);
 };
-
 
 
 
@@ -237,3 +265,27 @@ function hasNullFields(obj) {
   }
   return false;
 }
+
+
+module.exports.getTPByUserId = (req, res, next) => {
+  const userId = req.params.user_id;
+
+  model.getTaskProgressByUserId(userId, (error, results) => {
+    if (error) {
+      console.error("Error fetching task progress by user ID:", error);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+
+    if (results && results.taskprogress && results.taskprogress.length > 0) {
+      // Assuming results contain an object with a 'taskprogress' property
+      const taskprogressresponse = {
+        taskprogress: results.taskprogress,
+      };
+
+      res.status(200).json(taskprogressresponse);
+    } else {
+      // No task progress found for the user
+      res.status(404).json({ message: "No task progress found for the user" });
+    }
+  });
+};

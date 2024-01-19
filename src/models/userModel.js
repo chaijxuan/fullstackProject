@@ -1,17 +1,16 @@
 // userModel.js
 const pool = require("../services/db");
 
-module.exports.insertNewUser = (data, callback) =>
-{
-    const SQLSTATMENT = `
+module.exports.insertNewUser = (data, callback) => {
+  const SQLSTATMENT = `
     INSERT INTO User (username, email, password)
     VALUES (?, ? , ? );
    
    
     `;
-const VALUES = [data.username, data.email, data.password];
+  const VALUES = [data.username, data.email, data.password];
 
-pool.query(SQLSTATMENT, VALUES, callback);
+  pool.query(SQLSTATMENT, VALUES, callback);
 }
 
 
@@ -28,11 +27,29 @@ module.exports.checkExistingUsername = (username, callback) => {
 
 module.exports.selectAll = (callback) => {
   const SQL_STATEMENT = `
-    SELECT user_id, username, email FROM User;
+    SELECT user_id, username, email, total_points FROM User;
   `;
 
   pool.query(SQL_STATEMENT, callback);
 };
+
+
+
+module.exports.updateUserTotalPoints = (userId, callback) => {
+  const SQL_UPDATE_STATEMENT = `
+  UPDATE User
+  SET total_points = IFNULL((SELECT SUM(Task.points) FROM TaskProgress
+                            LEFT JOIN Task ON TaskProgress.task_id = Task.task_id
+                            WHERE User.user_id = TaskProgress.user_id), 0)
+  WHERE user_id = ?;
+  
+  `;
+
+  pool.query(SQL_UPDATE_STATEMENT, [userId], (error, results, fields) => {
+    callback(error, results);
+  });
+};
+
 
 
 module.exports.getUserByUsername = (username, callback) => {
@@ -42,9 +59,9 @@ module.exports.getUserByUsername = (username, callback) => {
   `;
   const VALUES = [username];
 
-  pool.query(SQL_STATEMENT, VALUES,callback) 
-    
-  };
+  pool.query(SQL_STATEMENT, VALUES, callback)
+
+};
 
 module.exports.getUserDetails = (userId, callback) => {
   const SQL_STATEMENT = `
@@ -72,41 +89,15 @@ WHERE
 
 
 
-
-module.exports.updateById = (data, callback) => {
+// Model function to get task progress by user ID
+module.exports.getTaskProgressByUserId = (userId, callback) => {
   const SQL_STATEMENT = `
-  UPDATE User
-  SET username = ?, email = ?
-    WHERE user_id = ?;
+      SELECT *
+      FROM TaskProgress
+      WHERE user_id = ?;
   `;
-  const VALUES = [data.username, data.email, data.user_id];
 
-  pool.query(SQL_STATEMENT, VALUES, callback);
-}
-/*
-module.exports.deleteById = (data, callback) => {
-  const SQLSTATMENT = `
-  DELETE FROM User
-  WHERE user_id = ?;
-
-  ALTER TABLE user AUTO_INCREMENT = 1;
-  `;
-  const VALUES = [data.id];
-
-  pool.query(SQLSTATMENT, VALUES, callback);
-
-}
-*/
-
-/* Second choice*/
-module.exports.deleteById = (data, callback) => {
-  const SQL_STATEMENT = `
-    DELETE FROM User
-    WHERE user_id = ?;
-   
-    
-  `;
-  const VALUES = [data.id, data.id];
-
-  pool.query(SQL_STATEMENT, VALUES, callback);
+  pool.query(SQL_STATEMENT, [userId], (error, results, fields) => {
+      callback(error, results);
+  });
 };

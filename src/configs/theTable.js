@@ -32,6 +32,7 @@ bcrypt.hash('1234', saltRounds, (error, hash) => {
       username TEXT,
       email TEXT,
       password TEXT NOT NULL
+      total_points INT
     );
 
     /* Create the Task table */
@@ -76,6 +77,9 @@ bcrypt.hash('1234', saltRounds, (error, hash) => {
       player_id INT,
       pet_id INT
     );
+
+    INSERT INTO taskprogress (user_id, task_id, completion_date, notes)VALUES 
+    (2, 1, '2024-01-19 12:00:00', 'NA');
 
     /* Insert sample data into the Task table */
     INSERT INTO Task (task_id, title, description, points) VALUES
