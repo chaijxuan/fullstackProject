@@ -97,7 +97,6 @@ module.exports.getTaskProgressByUserId = (userId, callback) => {
       WHERE user_id = ?;
   `;
 
-  pool.query(SQL_STATEMENT, [userId], (error, results, fields) => {
-      callback(error, results);
-  });
+  const VALUES=[userId];
+  pool.query(SQL_STATEMENT, VALUES, callback);
 };

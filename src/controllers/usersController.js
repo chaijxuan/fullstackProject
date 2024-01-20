@@ -276,10 +276,15 @@ module.exports.getTPByUserId = (req, res, next) => {
       return res.status(500).json({ error: "Internal Server Error" });
     }
 
-    if (results && results.taskprogress && results.taskprogress.length > 0) {
+    if (results.length>0) {
       // Assuming results contain an object with a 'taskprogress' property
+      const taskprogress=results.map((tp)=>tp.progress_id);
+
       const taskprogressresponse = {
-        taskprogress: results.taskprogress,
+        taskprogress:{
+          id:userId,
+          taskprogresses:taskprogress,
+        }
       };
 
       res.status(200).json(taskprogressresponse);

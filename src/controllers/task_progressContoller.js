@@ -140,5 +140,16 @@ module.exports.deleteTaskProgressById = (req, res, next) => {
 };
 
 
+module.exports.getTPByUserId = (req, res, next) => {
+  const userId = req.params.user_id;
 
+  taskProgressModel.getTaskProgressByUserId(userId, (error, pets) => {
+    if (error) {
+      console.error('Error fetching pets:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    } else {
+      res.status(200).json(pets);
+    }
+  });
+};
 

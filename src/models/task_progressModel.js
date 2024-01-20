@@ -75,3 +75,4 @@ module.exports.getTaskProgressByUserId = (userId, callback) => {
         callback(error, results);
     });
 };
+
