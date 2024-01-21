@@ -4,6 +4,7 @@ const model = require("../models/userModel");
 
 
 //userController
+//userController
 module.exports.register = (req, res, next) => {
   // Extract the new user data from the request body
   const { username, email } = req.body;
@@ -15,11 +16,12 @@ module.exports.register = (req, res, next) => {
       return res.status(500).send({ error: 'Internal Server Error' });
     }
 
-    // Construct the new user object
+    // Construct the new user object with the password field
     const newUser = {
       user_id: createUserResult.insertId,
       username,
       email,
+      password: req.body.password, // Include the password field here
     };
 
     // Send the successful response with the newly created user
@@ -291,6 +293,33 @@ module.exports.getTPByUserId = (req, res, next) => {
     } else {
       // No task progress found for the user
       res.status(404).json({ message: "No task progress found for the user" });
+    }
+  });
+};
+
+module.exports.getPlayerByUserEmail = (req, res, next) => {
+  const userEmail = req.params.user_email; // Use correct parameter name
+
+  model.getPlayerByUserEmail(userEmail, (error, results) => {
+    if (error) {
+      console.error("Error fetching player by user email:", error);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+
+    if (results.length > 0) {
+      const player = results[0]; // Assuming you only expect one player for a given email
+
+      const playerResponse = {
+        id: player.id,
+        playername: player.playername,
+        created_at: player.created_at,
+        email: player.email,
+      };
+
+      res.status(200).json(playerResponse);
+    } else {
+      // No player found for the user email
+      res.status(404).json({ message: "No player found for the user email" });
     }
   });
 };

@@ -52,16 +52,18 @@ module.exports.updateUserTotalPoints = (userId, callback) => {
 
 
 
+// userModel.js
 module.exports.getUserByUsername = (username, callback) => {
   const SQL_STATEMENT = `
-    SELECT * FROM User
+    SELECT user_id, username, password
+    FROM User
     WHERE username = ?;
   `;
+
   const VALUES = [username];
-
-  pool.query(SQL_STATEMENT, VALUES, callback)
-
+  pool.query(SQL_STATEMENT, VALUES, callback);
 };
+
 
 module.exports.getUserDetails = (userId, callback) => {
   const SQL_STATEMENT = `
@@ -98,5 +100,16 @@ module.exports.getTaskProgressByUserId = (userId, callback) => {
   `;
 
   const VALUES=[userId];
+  pool.query(SQL_STATEMENT, VALUES, callback);
+};
+
+module.exports.getPlayerByUserEmail = (userEmail, callback) => {
+  const SQL_STATEMENT = `
+    SELECT *
+    FROM Player
+    WHERE email = ?;  -- Change to search by email
+  `;
+
+  const VALUES = [userEmail];
   pool.query(SQL_STATEMENT, VALUES, callback);
 };

@@ -20,31 +20,27 @@ const tokenAlgorithm = process.env.JWT_ALGORITHM;
 // MIDDLEWARE FUNCTION FOR GENERATING JWT TOKEN
 //////////////////////////////////////////////////////
 module.exports.generateToken = (req, res, next) => {
-  if (!res.locals.userId) {
-    return res.status(500).json({ error: "User ID is undefined" });
-  }
-
   const payload = {
     userId: res.locals.userId,
-    timestamp: new Date(),
+    timestamp: new Date()
   };
 
   const options = {
-    algorithm: tokenAlgorithm || "HS256",
-    expiresIn: tokenDuration || "1h",
+    algorithm: tokenAlgorithm,
+    expiresIn: tokenDuration,
   };
 
-  try {
-    const token = jwt.sign(payload, secretKey, options);
-    res.locals.token = token;
-    // Move next() inside the try block
-    next();
-    return; // Add this return statement
-  } catch (err) {
-    console.error("Error generating token:", err);
-    res.status(500).json({ error: "Internal Server Error" });
-    // Remove the next() call from here
-  }
+  const callback = (err, token) => {
+    if (err) {
+      console.error("Error jwt:", err);
+      res.status(500).json(err);
+    } else {
+      res.locals.token = token;
+      next();
+    }
+  };
+
+  const token = jwt.sign(payload, secretKey, options, callback);
 };
 
 
@@ -52,7 +48,7 @@ module.exports.generateToken = (req, res, next) => {
 //////////////////////////////////////////////////////
 // MIDDLEWARE FUNCTION FOR SENDING JWT TOKEN
 //////////////////////////////////////////////////////
-module.exports.sendToken = (req, res) => {
+module.exports.sendToken = (req, res, next) => {
   res.status(200).json({
     message: res.locals.message,
     token: res.locals.token,
@@ -62,28 +58,28 @@ module.exports.sendToken = (req, res) => {
 // MIDDLEWARE FUNCTION FOR VERIFYING JWT TOKEN
 //////////////////////////////////////////////////////
 module.exports.verifyToken = (req, res, next) => {
-    const authHeader = req.headers.authorization;
-  
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return res.status(401).json({ error: 'No token provided' });
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({ error: 'No token provided' });
+  }
+
+  const token = authHeader.substring(7);
+
+  if (!token) {
+    return res.status(401).json({ error: "No token provided" });
+  }
+
+  const callback = (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ error: "Invalid token" });
     }
-  
-    const token = authHeader.substring(7);
-  
-    if (!token) {
-      return res.status(401).json({ error: "No token provided" });
-    }
-  
-    const callback = (err, decoded) => {
-      if (err) {
-        return res.status(401).json({ error: "Invalid token" });
-      }
-  
-      res.locals.userId = decoded.userId;
-      res.locals.tokenTimestamp = decoded.timestamp;
-  
-      next();
-    };
-  
-    jwt.verify(token, secretKey, callback);
+
+    res.locals.userId = decoded.userId;
+    res.locals.tokenTimestamp = decoded.timestamp;
+
+    next();
   };
+
+  jwt.verify(token, secretKey, callback);
+};
