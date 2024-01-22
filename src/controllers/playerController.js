@@ -1,30 +1,36 @@
 const playerModel = require('../models/playerModel');
 
 module.exports.createPlayer = (req, res, next) => {
+  // Extract necessary data from the request body
+  const { username, email } = req.body;
+
+  // Assuming the token is available in the request headers
+  const token = req.headers.authorization; // Adjust this based on how your token is sent
+
+  // Check if required data is present
+  if (!username || !email || !token) {
+    return res.status(400).json({ error: "Missing required data" });
+  }
+
+  // Assuming you have a function in your playerModel for creating a player
   const playerData = {
-    username: req.body.username,
-    email: req.body.email,
-    password: req.body.password,
+    username,
+    email,
+    token,
+    // Add other player data as needed
   };
 
-  const callback = (error, results, fields) => {
+  playerModel.createPlayer(playerData, (error, results) => {
     if (error) {
       console.error("Error creating player:", error);
       res.status(500).json({ error: "Internal Server Error" });
     } else {
-      // Check if the insertion was successful
-      if (results && results.affectedRows > 0) {
-        res.status(201).json({ message: "Player created successfully" }); // 201 Created
-      } else {
-        // Player not created
-        res.status(400).json({ error: "Unable to create the player" });
-      }
+      // Player created successfully
+      res.status(201).json({ message: "Player created successfully", player: results });
     }
-  };
-
-  // Call the createPlayer function
-  playerModel.inserSingle(playerData, callback);
+  });
 };
+
 
 // userController
 module.exports.getPlayersWithUsers = (req, res, next) => {
@@ -136,3 +142,24 @@ module.exports.getPlayerByUserEmail = (req, res) => {
     }
   });
 };
+
+
+module.exports.getPlayerInfoByToken = (req, res, next) => {
+  const userId = res.locals.userId;
+
+  playerModel.getPlayerById(userId, (error, result) => {
+    if (error) {
+      console.error('Error getting player by userID:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    } else {
+      if (result && result.length > 0) {
+        // Player found and password verified
+        res.status(200).json({ players: result }); // Sending an array of players
+      } else {
+        // Player not found or incorrect password
+        res.status(404).json({ error: 'Player not found ' });
+      }
+    }
+  });
+};
+

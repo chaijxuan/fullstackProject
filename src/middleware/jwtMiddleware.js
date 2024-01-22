@@ -36,6 +36,7 @@ module.exports.generateToken = (req, res, next) => {
       res.status(500).json(err);
     } else {
       res.locals.token = token;
+      console.log('Generated Token:', token);
       next();
     }
   };
@@ -52,7 +53,9 @@ module.exports.sendToken = (req, res, next) => {
   res.status(200).json({
     message: res.locals.message,
     token: res.locals.token,
+  
   });
+  
 };
 /////////////////////////////////////////////
 // MIDDLEWARE FUNCTION FOR VERIFYING JWT TOKEN
@@ -72,14 +75,16 @@ module.exports.verifyToken = (req, res, next) => {
 
   const callback = (err, decoded) => {
     if (err) {
-      return res.status(401).json({ error: "Invalid token" });
+      return res.status(401).json({ error: "Invalid token" });6
     }
-
+  
     res.locals.userId = decoded.userId;
     res.locals.tokenTimestamp = decoded.timestamp;
-
+  
+    
     next();
   };
-
+  
   jwt.verify(token, secretKey, callback);
+  
 };

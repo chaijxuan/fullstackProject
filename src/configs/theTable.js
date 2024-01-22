@@ -27,16 +27,13 @@ bcrypt.hash('1234', saltRounds, (error, hash) => {
     DROP TABLE IF EXISTS playerpetrelation;
 
     /* Create the User table with the new structure */
-  
-
-CREATE TABLE User (
-  user_id INT PRIMARY KEY AUTO_INCREMENT,
-  username TEXT,
-  email TEXT,
-  password TEXT NOT NULL,
-  total_points INT
-);
-
+    CREATE TABLE User (
+      user_id INT PRIMARY KEY AUTO_INCREMENT,
+      username TEXT,
+      email TEXT,
+      password TEXT NOT NULL,
+      total_points INT
+    );
 
     /* Create the Task table */
     CREATE TABLE Task (
@@ -55,15 +52,15 @@ CREATE TABLE User (
       notes TEXT
     );
 
-    CREATE TABLE player (
+    CREATE TABLE Player (
       id INT AUTO_INCREMENT PRIMARY KEY,
       playername TEXT,
       email TEXT,
-      password TEXT,
+      user_id INT,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
-
-    CREATE TABLE pet (
+    
+    CREATE TABLE Pet (
       id INT AUTO_INCREMENT PRIMARY KEY,
       player_id INT,
       pet_name TEXT,
@@ -81,34 +78,36 @@ CREATE TABLE User (
       pet_id INT
     );
 
-    INSERT INTO taskprogress (user_id, task_id, completion_date, notes)VALUES 
-    (2, 1, '2024-01-19 12:00:00', 'NA');
+    INSERT INTO taskprogress (user_id, task_id, completion_date, notes) VALUES 
+      (2, 1, '2024-01-19 12:00:00', 'NA');
 
     /* Insert sample data into the Task table */
-    INSERT INTO Task (task_id, title, description, points) VALUES
-      (1, 'Plant a Tree', 'Plant a tree in your neighborhood or a designated green area.', 50),
-      (2, 'Use Public Transportation', 'Use public transportation or carpool instead of driving alone.', 30),
-      (3, 'Reduce Plastic Usage', 'Commit to using reusable bags and containers.', 40),
-      (4, 'Energy Conservation', 'Turn off lights and appliances when not in use.', 25),
-      (5, 'Composting', 'Start composting kitchen scraps to create natural fertilizer.', 35);
+    INSERT INTO Task (title, description, points) VALUES
+      ('Plant a Tree', 'Plant a tree in your neighborhood or a designated green area.', 50),
+      ('Use Public Transportation', 'Use public transportation or carpool instead of driving alone.', 30),
+      ('Reduce Plastic Usage', 'Commit to using reusable bags and containers.', 40),
+      ('Energy Conservation', 'Turn off lights and appliances when not in use.', 25),
+      ('Composting', 'Start composting kitchen scraps to create natural fertilizer.', 35);
 
     /* Insert a sample user into the User table */
     INSERT INTO User (username, email, password) VALUES
       ('admin', 'a@a.com', '${hash}'),
-      ('jxuan', 'chaijx3333@gmail.com', '123');
+      ('jxuan', 'chaijx3333@gmail.com', '${hash}');
 
-    INSERT INTO Player (playername, email, password) VALUES
-      ('Ash', 'chaijx3333@gmail.com', '123'),
-      ('Mis', 'chaijx3333@gmail.com', '123');
+    INSERT INTO Player (playername, email, user_id) VALUES
+      ('Ash', 'chaijx3333@gmail.com', 2), 
+      ('Mis', 'chaijx3333@gmail.com', 2);
 
     INSERT INTO Pet (player_id, pet_name, species, points, created_at, weapon, head, armour)
     VALUES (1, 'Fluffy', 'Dog', 100, NOW(), 'Sword', 'Helmet', 'Chainmail');
 
     INSERT INTO playerpetrelation (player_id, pet_id) VALUES 
       (1, 1);
+`;
+
 
       
-    `;
+    
 
     pool.query(SQLSTATEMENT, (error, results, fields) => {
       if (error) {

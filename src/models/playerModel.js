@@ -38,12 +38,12 @@ module.exports.deletePlayer = (playerId, callback) => {
   pool.query(SQL_STATEMENT, VALUES, callback);
 };
 
-module.exports.getPlayerById = (playerId, password, callback) => {
+module.exports.getPlayerById = (userId, callback) => {
   const SQL_STATEMENT = `
     SELECT id, playername, email FROM Player
-    WHERE id = ? AND password = ?;
+    WHERE user_id = ? 
   `;
-  const VALUES = [playerId, password];
+  const VALUES = [userId];
 
   pool.query(SQL_STATEMENT, VALUES, callback);
 };
@@ -68,5 +68,16 @@ module.exports.getPlayerByUserEmail = (userEmail, callback) => {
   `;
 
   const VALUES = [userEmail];
+  pool.query(SQL_STATEMENT, VALUES, callback);
+};
+
+module.exports.findOne = (userId, callback) => {
+  const SQL_STATEMENT = `
+    SELECT *
+    FROM Player
+    WHERE user_id = ?;  
+  `;
+
+  const VALUES = [userId];
   pool.query(SQL_STATEMENT, VALUES, callback);
 };

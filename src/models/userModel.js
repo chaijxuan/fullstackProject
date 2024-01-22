@@ -89,6 +89,8 @@ WHERE
 
 
 
+
+
 // Model function to get task progress by user ID
 module.exports.getTaskProgressByUserId = (userId, callback) => {
   const SQL_STATEMENT = `
@@ -122,3 +124,5 @@ module.exports.loginUser = (data, callback) => {
   const VALUES = [data.username, data.password];
   pool.query(SQLSTATEMENT, VALUES, callback);
 };
+
+

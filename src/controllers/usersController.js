@@ -16,17 +16,24 @@ module.exports.register = (req, res, next) => {
       console.error("Error registering user:", error);
       res.status(500).json(error);
       return;
-    } else if (result.length == 0) {
+    } else if (result.length === 0) {
       res.status(404).json({ message: "User not found" });
       return;
     } else {
+      // Extract the user_id from the result
+      const user_id = result.insertId; // Assuming the user_id is available in the result object
+
+      // Store user_id in res.locals
+      res.locals.userId = user_id;
+
       const user = data.username;
-      res.status(200).json({ message: `User ${user} created successfully.` });
+      res.status(200).json({ message: `User ${user} created successfully.`, user_id: user_id });
     }
   };
 
   model.registerUser(data, callback);
 };
+
 
 
 
@@ -142,9 +149,17 @@ module.exports.login = (req, res, next) => {
       res.status(500).json(error);
     } else if (results.length == 0) {
       res.status(404).json({ message: "User not found" });
-      return;
     } else {
+      // Assuming your user ID is available in the results
+      const userId = results[0].user_id;
+
+      // Store userId in res.locals
+      res.locals.userId = userId;
+
+      // Store hashed password in res.locals for further use (if needed)
       res.locals.hash = results[0].password;
+
+      // Continue to the next middleware
       next();
     }
   };
@@ -188,12 +203,12 @@ module.exports.updateUserById = (req, res, next) => {
 
     // Directly send a successful response with the updated user details
     return res.status(200).json({
-      
-      
-        user_id,
-        username,
-        email,
-      
+
+
+      user_id,
+      username,
+      email,
+
     });
   };
 
@@ -230,8 +245,8 @@ module.exports.deleteUserById = (req, res, next) => {
 
 
 // Controller function to retrieve user details by ID
-module.exports.getUserById = (req, res) => {
-  const userId = req.params.user_id;
+module.exports.getUserInfoByToken = (req, res, next) => {
+  const userId = res.locals.userId;
 
   // Call the getUserDetails method from userModel
   model.getUserDetails(userId, (error, results) => {
@@ -242,6 +257,7 @@ module.exports.getUserById = (req, res) => {
       res.status(404).json({ message: 'User not found' });
     } else {
       res.status(200).json(results);
+      next();
     }
   });
 };
@@ -265,14 +281,14 @@ module.exports.getTPByUserId = (req, res, next) => {
       return res.status(500).json({ error: "Internal Server Error" });
     }
 
-    if (results.length>0) {
+    if (results.length > 0) {
       // Assuming results contain an object with a 'taskprogress' property
-      const taskprogress=results.map((tp)=>tp.progress_id);
+      const taskprogress = results.map((tp) => tp.progress_id);
 
       const taskprogressresponse = {
-        taskprogress:{
-          id:userId,
-          taskprogresses:taskprogress,
+        taskprogress: {
+          id: userId,
+          taskprogresses: taskprogress,
         }
       };
 
@@ -299,3 +315,4 @@ module.exports.getPlayerByUserEmail = (req, res) => {
     }
   });
 };
+
