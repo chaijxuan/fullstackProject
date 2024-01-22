@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("responseStatus:", responseStatus);
         console.log("responseData:", responseData);
 
-        const taskProgressInfo = document.getElementById("taskProgressInfo");
+        const playerInfo = document.getElementById("playerInfo");
 
         const displayPlayerForUser = (player) => {
             const displayItem = document.createElement("div");
@@ -23,12 +23,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     </p>
                 </div>
             `;
-            taskProgressInfo.appendChild(displayItem);
+            playerInfo.appendChild(displayItem);
         };
 
         responseData.forEach(displayPlayerForUser);
     };
 
     // Fetch player data based on user email
-    fetchMethod(`${currentUrl}/api/player?email=${userEmail}`, callback);
+    fetchMethod(`${currentUrl}/api/player/${userEmail}`, callback);
 });

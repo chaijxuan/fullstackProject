@@ -2,10 +2,10 @@ const pool = require("../services/db");
 module.exports.inserSingle = (playerData, callback) => {
 
     const SQL_STATEMENT = `
-        INSERT INTO Player (Playername, Email, Password)
+        INSERT INTO Player (Playername, Email)
         VALUES (?, ?, ?);
       `;
-    const VALUES = [playerData.username, playerData.email, playerData.password];
+    const VALUES = [playerData.username, playerData.email];
 
     pool.query(SQL_STATEMENT, VALUES, callback);
 }
@@ -56,5 +56,17 @@ module.exports.getPetsByPlayer = (playerId, callback) => {
   `;
 
   const VALUES = [playerId];
+  pool.query(SQL_STATEMENT, VALUES, callback);
+};
+
+
+module.exports.getPlayerByUserEmail = (userEmail, callback) => {
+  const SQL_STATEMENT = `
+    SELECT *
+    FROM Player
+    WHERE email = ?;  
+  `;
+
+  const VALUES = [userEmail];
   pool.query(SQL_STATEMENT, VALUES, callback);
 };

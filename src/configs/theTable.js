@@ -27,7 +27,7 @@ bcrypt.hash('1234', saltRounds, (error, hash) => {
     DROP TABLE IF EXISTS playerpetrelation;
 
     /* Create the User table with the new structure */
-    /* Create the User table with the new structure */
+  
 
 CREATE TABLE User (
   user_id INT PRIMARY KEY AUTO_INCREMENT,

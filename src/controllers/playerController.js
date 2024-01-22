@@ -123,3 +123,16 @@ module.exports.getAllPlayers = (req, res) => {
     }
   });
 };
+
+module.exports.getPlayerByUserEmail = (req, res) => {
+  const userEmail = req.params.user_email;
+
+  playerModel.getPlayerByUserEmail(userEmail, (error, pets) => {
+    if (error) {
+      console.error('Error fetching player:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    } else {
+      res.status(200).json(pets);
+    }
+  });
+};

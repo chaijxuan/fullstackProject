@@ -4,30 +4,28 @@ const model = require("../models/userModel");
 
 
 //userController
-//userController
 module.exports.register = (req, res, next) => {
-  // Extract the new user data from the request body
-  const { username, email } = req.body;
+  const data = {
+    username: req.body.username,
+    email: req.body.email,
+    password: res.locals.hash,
+  };
 
-  // Insert the new user into the database
-  model.insertNewUser({ username, email, password: req.body.password }, (createUserError, createUserResult) => {
-    if (createUserError || !createUserResult.insertId) {
-      console.error("Error creating user:", createUserError);
-      return res.status(500).send({ error: 'Internal Server Error' });
+  const callback = (error, result) => {
+    if (error) {
+      console.error("Error registering user:", error);
+      res.status(500).json(error);
+      return;
+    } else if (result.length == 0) {
+      res.status(404).json({ message: "User not found" });
+      return;
+    } else {
+      const user = data.username;
+      res.status(200).json({ message: `User ${user} created successfully.` });
     }
+  };
 
-    // Construct the new user object with the password field
-    const newUser = {
-      user_id: createUserResult.insertId,
-      username,
-      email,
-      password: req.body.password, // Include the password field here
-    };
-
-    // Send the successful response with the newly created user
-    res.status(201).send({ message: 'User created successfully', user: newUser });
-    return; // Add this return statement to exit the function after sending the response
-  });
+  model.registerUser(data, callback);
 };
 
 
@@ -133,36 +131,25 @@ module.exports.readAllUser = (req, res, next) => {
 
 // userController
 module.exports.login = (req, res, next) => {
-  const { username, password } = req.body;
+  const data = {
+    username: req.body.username,
+    password: req.body.password,
+  };
 
-  // Check if username or password is missing
-  if (!username || !password) {
-    return res.status(400).json({ error: 'Missing username or password' });
-  }
-
-  // Query the database to find the user with the provided username
-  model.getUserByUsername(username, (error, user) => {
+  const callback = (error, results) => {
     if (error) {
-      console.error("Error retrieving user:", error);
-      return res.status(500).json({ error: 'Internal Server Error' });
+      console.error("Error login user", error);
+      res.status(500).json(error);
+    } else if (results.length == 0) {
+      res.status(404).json({ message: "User not found" });
+      return;
+    } else {
+      res.locals.hash = results[0].password;
+      next();
     }
+  };
 
-    // Check if the user exists
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
-    }
-
-    // Check if the hashed password is available in the user object
-    if (!user.password) {
-      return res.status(500).json({ error: 'Hashed password not found for the user' });
-    }
-
-    // Set the hashed password in res.locals.hash
-    res.locals.hash = user.password;
-
-    // Move to the next middleware
-    next();
-  });
+  model.loginUser(data, callback);
 };
 
 
@@ -297,29 +284,18 @@ module.exports.getTPByUserId = (req, res, next) => {
   });
 };
 
-module.exports.getPlayerByUserEmail = (req, res, next) => {
-  const userEmail = req.params.user_email; // Use correct parameter name
 
-  model.getPlayerByUserEmail(userEmail, (error, results) => {
+
+
+module.exports.getPlayerByUserEmail = (req, res) => {
+  const userEmail = req.params.user_email;
+
+  model.getPlayerByUserEmail(userEmail, (error, pets) => {
     if (error) {
-      console.error("Error fetching player by user email:", error);
-      return res.status(500).json({ error: "Internal Server Error" });
-    }
-
-    if (results.length > 0) {
-      const player = results[0]; // Assuming you only expect one player for a given email
-
-      const playerResponse = {
-        id: player.id,
-        playername: player.playername,
-        created_at: player.created_at,
-        email: player.email,
-      };
-
-      res.status(200).json(playerResponse);
+      console.error('Error fetching player:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
     } else {
-      // No player found for the user email
-      res.status(404).json({ message: "No player found for the user email" });
+      res.status(200).json(pets);
     }
   });
 };

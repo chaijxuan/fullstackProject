@@ -8,9 +8,10 @@ router.use('/pets', petsRouter);
 
 router.post('/', controller.createPlayer);
 router.delete('/:id', controller.deletePlayer);
-router.get('/:id', controller.getPlayerByIdWithAuth);
+//router.get('/:id', controller.getPlayerByIdWithAuth);
 router.get('/pet/:playerId', controller.getPetsByPlayerController);
 router.get('/', controller.getAllPlayers);
+router.get('/:user_email', controller.getPlayerByUserEmail);
 
 
 module.exports = router;

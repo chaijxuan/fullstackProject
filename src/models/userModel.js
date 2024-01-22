@@ -1,17 +1,15 @@
 // userModel.js
 const pool = require("../services/db");
 
-module.exports.insertNewUser = (data, callback) => {
-  const SQLSTATMENT = `
+module.exports.registerUser = (data, callback) => {
+  const SQLSTATEMENT = `
     INSERT INTO User (username, email, password)
-    VALUES (?, ? , ? );
-   
-   
+    VALUES (?, ?, ?);
     `;
   const VALUES = [data.username, data.email, data.password];
 
-  pool.query(SQLSTATMENT, VALUES, callback);
-}
+  pool.query(SQLSTATEMENT, VALUES, callback);
+};
 
 
 module.exports.checkExistingEmail = (email, callback) => {
@@ -107,9 +105,20 @@ module.exports.getPlayerByUserEmail = (userEmail, callback) => {
   const SQL_STATEMENT = `
     SELECT *
     FROM Player
-    WHERE email = ?;  -- Change to search by email
+    WHERE email = ?;  
   `;
 
   const VALUES = [userEmail];
   pool.query(SQL_STATEMENT, VALUES, callback);
+};
+
+
+module.exports.loginUser = (data, callback) => {
+  const SQLSTATEMENT = `
+    SELECT * FROM User 
+    WHERE username = ?
+    `;
+
+  const VALUES = [data.username, data.password];
+  pool.query(SQLSTATEMENT, VALUES, callback);
 };
