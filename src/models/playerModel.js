@@ -1,14 +1,15 @@
 const pool = require("../services/db");
 module.exports.inserSingle = (playerData, callback) => {
 
-    const SQL_STATEMENT = `
-        INSERT INTO Player (Playername, Email)
-        VALUES (?, ?, ?);
-      `;
-    const VALUES = [playerData.username, playerData.email];
+  const SQL_STATEMENT = `
+      INSERT INTO Player (Playername, Email, user_id)
+      VALUES (?, ?, ?);
+    `;
+  const VALUES = [playerData.playername, playerData.email, playerData.userId];
 
-    pool.query(SQL_STATEMENT, VALUES, callback);
+  pool.query(SQL_STATEMENT, VALUES, callback);
 }
+
 
 module.exports.getAllPlayers = (callback) => {
   const SQL_STATEMENT = 'SELECT player.*, pet.pet_name as petname FROM Player player LEFT JOIN Pet pet ON player.id = pet.player_id';

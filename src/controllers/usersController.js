@@ -25,6 +25,7 @@ module.exports.register = (req, res, next) => {
 
       // Store user_id in res.locals
       res.locals.userId = user_id;
+      res.locals.email = data.email;
 
       const user = data.username;
       res.status(200).json({ message: `User ${user} created successfully.`, user_id: user_id });
@@ -152,9 +153,11 @@ module.exports.login = (req, res, next) => {
     } else {
       // Assuming your user ID is available in the results
       const userId = results[0].user_id;
+      const email=results[0].email
 
       // Store userId in res.locals
       res.locals.userId = userId;
+      res.locals.email=email;
 
       // Store hashed password in res.locals for further use (if needed)
       res.locals.hash = results[0].password;

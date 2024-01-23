@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const character_name = document.getElementById("createPlayerName").value;
   
       const data = {
-        name: character_name,
+        playername: character_name,
       };
       // Perform login request
       fetchMethod( currentUrl + "/api/player", callback, "POST", data, localStorage.getItem("token"));

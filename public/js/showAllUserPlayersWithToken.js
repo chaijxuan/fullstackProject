@@ -16,20 +16,32 @@ const callback = (responseStatus, responseData) => {
               <div class="card-body">
                   <h5 class="card-title">${player.playername}</h5>
                   <p class="card-text">
-                      Level: ${player.email}
+                      Email: ${player.email}
                   </p>
-                  <a href="#" class="btn btn-primary" id="update-${player.id}">Update</a>
+                  <a href="petAction.html?player_id=${player.id}" class="btn btn-primary" id="update-${player.id}">Pets</a>
+                  <a href="createPet.html?player_id=${player.id}" class="btn btn-primary" id="create-${player.id}">Get Pet</a>
                   <a href="#" class="btn btn-danger" id="delete-${player.id}">Delete</a>
               </div>
           </div>
           `;
       playerList.appendChild(displayItem);
   
-      const updateButton = document.getElementById(`update-${player.id}`);
-      updateButton.addEventListener("click", (event) => {
-        event.preventDefault();
-  
-        window.location.href = `updatePlayer.html?player_id=${player.id}`;
+      const viewDetailsButtons = document.querySelectorAll(".view-details-btn");
+      viewDetailsButtons.forEach((button) => {
+        button.addEventListener("click", (event) => {
+          event.preventDefault();
+          const playerId = button.getAttribute("data-player-id");
+          window.location.href = `petAction.html?player_id=${playerId}`;
+        });
+      });
+
+      const createPetButtons = document.querySelectorAll(".create-pet-btn");
+      createPetButtons.forEach((button) => {
+        button.addEventListener("click", (event) => {
+          event.preventDefault();
+          const playerId = button.getAttribute("data-player-id");
+          window.location.href = `createPet.html?player_id=${playerId}`;
+        });
       });
   
       const deleteButton = document.getElementById(`delete-${player.id}`);

@@ -2,25 +2,26 @@ const playerModel = require('../models/playerModel');
 
 module.exports.createPlayer = (req, res, next) => {
   // Extract necessary data from the request body
-  const { username, email } = req.body;
+  const { playername} = req.body;
+  const userId = res.locals.userId;
+  const email= res.locals.email;
 
-  // Assuming the token is available in the request headers
-  const token = req.headers.authorization; // Adjust this based on how your token is sent
+  
 
   // Check if required data is present
-  if (!username || !email || !token) {
+  if (!playername || !userId || !email) {
     return res.status(400).json({ error: "Missing required data" });
   }
 
-  // Assuming you have a function in your playerModel for creating a player
+
   const playerData = {
-    username,
+    playername,
+    userId,
     email,
-    token,
-    // Add other player data as needed
+  
   };
 
-  playerModel.createPlayer(playerData, (error, results) => {
+  playerModel.inserSingle(playerData, (error, results) => {
     if (error) {
       console.error("Error creating player:", error);
       res.status(500).json({ error: "Internal Server Error" });
