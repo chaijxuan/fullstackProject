@@ -3,13 +3,10 @@
 const Quest = require("../models/quesTrModel");
 
 module.exports.createQuestTrackerController = (req, res) => {
-  const questId = req.params.questID;
-  const petTrackerData = req.body;
+  const questId = req.params.questId;
+  const petId = req.params.petId;
 
-  // Assuming that the quest_id and pet_id are present in the request body
-  const { pet_id } = petTrackerData;
-
-  Quest.toCheck(petTrackerData, questId, (error, canCreate) => {
+  Quest.toCheck(petId, questId, (error, canCreate) => {
     if (error) {
       console.error("Error checking conditions:", error);
       return res.status(500).json({ error: "Error checking conditions" });
@@ -17,7 +14,7 @@ module.exports.createQuestTrackerController = (req, res) => {
 
     if (canCreate) {
       // Conditions are met, create QuestTracker
-      Quest.createQuestTracker({ quest_id: questId, pet_id }, (createError, createResults) => {
+      Quest.createQuestTracker({ quest_id: questId, pet_id: petId }, (createError, createResults) => {
         if (createError) {
           console.error("Error creating QuestTracker:", createError);
           return res.status(500).json({ error: "Error creating QuestTracker" });
@@ -33,7 +30,7 @@ module.exports.createQuestTrackerController = (req, res) => {
             console.log("QuestTracker created successfully");
 
             // Insert obtained item into PetInventory
-            Quest.insertIntoPetInventory(pet_id, obtainedItem, (inventoryErr) => {
+            Quest.insertIntoPetInventory(petId, obtainedItem, (inventoryErr) => {
               if (inventoryErr) {
                 console.error("Error inserting into PetInventory:", inventoryErr);
                 return res.status(500).json({ error: "Error inserting into PetInventory" });

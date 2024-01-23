@@ -48,7 +48,7 @@ GROUP BY
   pool.query(SQL_STATEMENT, VALUES, callback);
 };
 
-module.exports.updatePetPoints = (petId, callback) => {
+module.exports.updatePetPoints = (petId, playerId, callback) => {
   const SQL_UPDATE_STATEMENT = `
     UPDATE Pet
     SET points = (
@@ -58,13 +58,14 @@ module.exports.updatePetPoints = (petId, callback) => {
       WHERE QuestTracker.pet_id = ?
       GROUP BY QuestTracker.pet_id
     )
-    WHERE id = ?;
+    WHERE id = ?; 
   `;
 
-  const VALUES = [petId, petId];
+  const VALUES = [petId, petId]; // Using petId for both WHERE conditions
 
   pool.query(SQL_UPDATE_STATEMENT, VALUES, callback);
 };
+
 
 
 

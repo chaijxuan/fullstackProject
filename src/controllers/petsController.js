@@ -196,6 +196,8 @@ module.exports.updatePetEquipment = (req, res) => {
 
 
 
+
+
 module.exports.getPetsByPlayerId = (req, res) => {
   const playerId = req.params.playerId;
 
@@ -204,7 +206,19 @@ module.exports.getPetsByPlayerId = (req, res) => {
       console.error('Error fetching pets:', error);
       res.status(500).json({ error: 'Internal Server Error' });
     } else {
+      // Update points for each pet
+      pets.forEach((pet) => {
+        Pet.updatePetPoints(pet.id, playerId, (updateError, updateResult) => {
+          if (updateError) {
+            console.error('Error updating pet points:', updateError);
+          } else {
+            console.log(`Points updated for Pet ID ${pet.id}`);
+          }
+        });
+      });
+
       res.status(200).json(pets);
     }
   });
 };
+

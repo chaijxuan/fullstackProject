@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
                   <br>
                   Armour: ${pet.armour}
               </p>
-              <a href="assignQuestForPet.html?player_id=${pet.player_id}" class="btn btn-primary update-bn" data-player-id="${pet.player_id}">Assign Quest</a>
+              <a href="assignQuestForPet.html?pet_id=${pet.id}" class="btn btn-primary update-btn" data-pet-id="${pet.id}">Assign Quest</a>
               <a href="updateEquipemt.html?player_id=${pet.player_id}" class="btn btn-primary equipment-btn" data-player-id="${pet.player_id}">Equipment</a>
 
           </div>
@@ -35,8 +35,8 @@ document.addEventListener("DOMContentLoaded", function () {
         assignQuestButton.forEach((button) => {
           button.addEventListener("click", (event) => {
             event.preventDefault();
-            const playerId = button.getAttribute("data-player-id");
-            window.location.href = `assignQuestForPet.html?player_id=${playerId}`;
+            const petId = button.getAttribute("data-pet-id");
+            window.location.href = `assignQuestForPet.html?pet_id=${petId}`;
           });
         });
       };

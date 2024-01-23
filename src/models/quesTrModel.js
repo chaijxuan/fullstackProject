@@ -2,8 +2,8 @@
 
 const pool = require("../services/db");
 
-module.exports.toCheck = (data, questId, callback) => {
-  const { pet_id } = data;
+module.exports.toCheck = (petId, questId, callback) => {
+  
 
   // SQL query to check pet points and quest unlock requirements
   const checkSQL = `
@@ -16,16 +16,13 @@ module.exports.toCheck = (data, questId, callback) => {
     JOIN Quest ON pet.id = ? AND quest.id = ?;
   `;
 
-  pool.query(checkSQL, [pet_id, questId], (checkError, checkResults) => {
-    if (checkError) {
-      console.error("Error checking points and unlock requirement:", checkError);
-      return callback(checkError, null);
-    }
+  pool.query(checkSQL, [petId, questId] ,callback)
+  };
 
-    //wait for the query and call it back 
-    callback(null, checkResults.length > 0 && checkResults[0].unlockCondition === 1);
-  });
-};
+
+
+
+
 
 
 

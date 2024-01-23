@@ -3,6 +3,8 @@ const router = express.Router();
 const controller = require('../controllers/questController'); 
 
 router.post('/', controller.createQuest);
+router.get('/', controller.getAll);
+
 router.get('/:id', controller.getQuestById); 
 router.delete('/:id', controller.deleteQuestById);
 

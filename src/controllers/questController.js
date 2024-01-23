@@ -55,3 +55,19 @@ module.exports.getQuestById = (req, res) => {
 };
 
 
+
+
+module.exports.getAll = (req, res, next) => {
+  const callback = (error, results, fields) => {
+      if (error) {
+          console.error("Error readAllTask:", error);
+          res.status(500).json(error);
+      } else {
+          res.status(200).json(results);
+      }
+  };
+
+  // Call the selectAll method from userModel
+  Quest.showAll(callback);
+}
+

@@ -37,5 +37,12 @@ module.exports.getQuestById = (questId, callback) => {
 };
 
 
+module.exports.showAll = (callback) => {
+  const SQL_STATEMENT = `
+  SELECT *
+  FROM quest;
+    `;
 
+  pool.query(SQL_STATEMENT, callback);
+};
 
