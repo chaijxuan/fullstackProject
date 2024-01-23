@@ -3,8 +3,6 @@
 const pool = require("../services/db");
 
 module.exports.toCheck = (petId, questId, callback) => {
-  
-
   // SQL query to check pet points and quest unlock requirements
   const checkSQL = `
     SELECT
@@ -16,8 +14,16 @@ module.exports.toCheck = (petId, questId, callback) => {
     JOIN Quest ON pet.id = ? AND quest.id = ?;
   `;
 
-  pool.query(checkSQL, [petId, questId] ,callback)
-  };
+  pool.query(checkSQL, [petId, questId], (error, results) => {
+    if (error) {
+      return callback(error, null);
+    }
+
+    // Assuming that the results array contains the unlockCondition
+    const canCreate = results[0].unlockCondition === 1;
+    callback(null, canCreate);
+  });
+};
 
 
 
