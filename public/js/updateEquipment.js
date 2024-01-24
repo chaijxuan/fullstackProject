@@ -7,6 +7,38 @@ document.addEventListener("DOMContentLoaded", function () {
     const headForm = document.getElementById("updateHeadForm");
     const armorForm = document.getElementById("updateArmorForm");
 
+
+     // Handle form submissions
+     weaponForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        const newWeapon = document.getElementById("weaponInput").value;
+        const data = {
+            weapon: newWeapon,
+          };
+          // Perform login request
+          fetchMethod( currentUrl + `/api/pet/${petId}`, callback, "PUT", data);
+    });
+
+    headForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        const newHead = document.getElementById("headInput").value;
+        const data = {
+            head: newHead,
+          };
+          // Perform login request
+          fetchMethod( currentUrl + `/api/pet/${petId}`, callback, "PUT", data);
+    });
+
+    armorForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        const newArmor = document.getElementById("armorInput").value;
+        const data = {
+            armour: newArmor,
+          };
+          // Perform login request
+          fetchMethod( currentUrl + `/api/pet/${petId}`, callback, "PUT", data);
+    });
+
     const callback = (responseStatus, responseData) => {
         console.log("responseStatus:", responseStatus);
         console.log("responseData:", responseData);
@@ -55,34 +87,5 @@ document.addEventListener("DOMContentLoaded", function () {
     // Fetch pet inventory items based on pet_id
     fetchMethod(currentUrl + `/api/petinventory/${petId}`, callback, "GET", null);
 
-    // Handle form submissions
-    weaponForm.addEventListener("submit", function (event) {
-        event.preventDefault();
-        const newWeapon = document.getElementById("weaponInput").value;
-        const data = {
-            weapon: newWeapon,
-          };
-          // Perform login request
-          fetchMethod( currentUrl + `/api/pet/${petId}`, callback, "PUT", data);
-    });
-
-    headForm.addEventListener("submit", function (event) {
-        event.preventDefault();
-        const newHead = document.getElementById("headInput").value;
-        const data = {
-            head: newHead,
-          };
-          // Perform login request
-          fetchMethod( currentUrl + `/api/pet/${petId}`, callback, "PUT", data);
-    });
-
-    armorForm.addEventListener("submit", function (event) {
-        event.preventDefault();
-        const newArmor = document.getElementById("armorInput").value;
-        const data = {
-            armour: newArmor,
-          };
-          // Perform login request
-          fetchMethod( currentUrl + `/api/pet/${petId}`, callback, "PUT", data);
-    });
+   
 });

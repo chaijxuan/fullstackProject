@@ -50,15 +50,15 @@ GROUP BY
 
 module.exports.updatePetPoints = (petId, playerId, callback) => {
   const SQL_UPDATE_STATEMENT = `
-    UPDATE Pet
-    SET points = (
-      SELECT IFNULL(SUM(Quest.experience_points_reward), 0)
-      FROM QuestTracker
-      LEFT JOIN Quest ON QuestTracker.quest_id = Quest.id
-      WHERE QuestTracker.pet_id = ?
-      GROUP BY QuestTracker.pet_id
-    )
-    WHERE id = ?; 
+  UPDATE Pet
+  SET points = COALESCE((
+    SELECT SUM(Quest.experience_points_reward)
+    FROM QuestTracker
+    LEFT JOIN Quest ON QuestTracker.quest_id = Quest.id
+    WHERE QuestTracker.pet_id = ?
+    GROUP BY QuestTracker.pet_id
+  ), 0)
+  WHERE id = ?;
   `;
 
   const VALUES = [petId, petId]; // Using petId for both WHERE conditions
