@@ -119,7 +119,7 @@ module.exports.deletePetAndRelationsController = (req, res) => {
 
 
 module.exports.getInventory = (req, res) => {
-  const petId = req.params.id;
+  const petId = req.params.pet_id;
 
   const callback = (error, results) => {
     if (error) {
@@ -151,7 +151,8 @@ module.exports.getInventory = (req, res) => {
     }
   };
 
-  Pet.getPetInventory({ id: petId }, callback);
+  Pet.getPetInventory({ pet_id: petId }, callback);
+
 };
 
 

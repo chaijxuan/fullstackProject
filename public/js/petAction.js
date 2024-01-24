@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
                   Armour: ${pet.armour}
               </p>
               <a href="assignQuestForPet.html?pet_id=${pet.id}" class="btn btn-primary update-btn" data-pet-id="${pet.id}">Assign Quest</a>
-              <a href="updateEquipemt.html?player_id=${pet.player_id}" class="btn btn-primary equipment-btn" data-player-id="${pet.player_id}">Equipment</a>
+              <a href="updateEquipemt.html?pet_id=${pet.id}" class="btn btn-primary equipment-btn" data-pet-id="${pet.id}">Equipment</a>
 
           </div>
         `;
@@ -39,10 +39,22 @@ document.addEventListener("DOMContentLoaded", function () {
             window.location.href = `assignQuestForPet.html?pet_id=${petId}`;
           });
         });
+
+
+        const updateEquipemtButton = document.querySelectorAll(".equipment-btn");
+        updateEquipemtButton.forEach((button) => {
+          button.addEventListener("click", (event) => {
+            event.preventDefault();
+            const petId = button.getAttribute("data-pet-id");
+            window.location.href = `updateEquipemt.html?pet_id=${petId}`;
+          });
+        });
       };
   
       responseData.forEach(displayPetDetails);
     };
+
+    
   
     fetchMethod(`${currentUrl}/api/pet/${playerId}`, callback);
   });

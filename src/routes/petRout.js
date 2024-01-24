@@ -6,9 +6,9 @@ const controller = require('../controllers/petsController');
 // router.get('/:petId', controller.getPetById);
 // //router.put('/:petId/update',controller.upgradeThePet);
 // router.delete('/:petId', controller.deletePetAndRelationsController);
-// router.get('/petinventory/:id', controller.getInventory);
+router.get('/petinventory/:pet_id', controller.getInventory);
 // router.post('/pvp/:pet1Id/:pet2Id', controller.pvp);
-// router.put('/:petId',controller.updatePetEquipment);
+router.put('/:petId',controller.updatePetEquipment);
 router.get('/:playerId', controller.getPetsByPlayerId);
 
 

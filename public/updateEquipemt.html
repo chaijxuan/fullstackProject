@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Pet Equipment</title>
+    <!-- Add any additional CSS styles here -->
+    <style>
+        /* Add your custom styles here */
+        .form-container {
+            max-width: 400px;
+            margin: auto;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .card {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+
+        .card-body {
+            padding: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Update Pet Equipment</h1>
+
+    <!-- Weapon Update Form -->
+    <div class="form-container">
+        <form id="updateWeaponForm" class="form-group">
+            <label for="weaponInput">Update Weapon:</label>
+            <input type="text" id="weaponInput" name="weapon" required>
+            <button type="submit">Update Weapon</button>
+        </form>
+    </div>
+
+    <!-- Head Update Form -->
+    <div class="form-container">
+        <form id="updateHeadForm" class="form-group">
+            <label for="headInput">Update Head:</label>
+            <input type="text" id="headInput" name="head" required>
+            <button type="submit">Update Head</button>
+        </form>
+    </div>
+
+    <!-- Armor Update Form -->
+    <div class="form-container">
+        <form id="updateArmorForm" class="form-group">
+            <label for="armorInput">Update Armor:</label>
+            <input type="text" id="armorInput" name="armor" required>
+            <button type="submit">Update Armor</button>
+        </form>
+    </div>
+
+    <!-- Pet Inventory List -->
+    <div id="petInventoryList" class="row">
+    </div>
+</div>
+
+<script src="js/queryCmds.js" type="text/javascript"></script>
+<script src="js/getCurrentURL.js" type="text/javascript"></script>
+<script src="js/userNavbarToggle.js" type="text/javascript"></script>
+<script src="js/updateEquipment.js" type="text/javascript"></script>
+
+</body>
+</html>

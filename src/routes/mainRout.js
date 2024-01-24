@@ -10,7 +10,9 @@ const taskProgressRout= require('./task_progressRout');
 const playerRout = require('./playerRout'); // Import usersRout module
 const petRout=require('./petRout');
 const questRout=require('./questRout');
-const questTrackerRout=require('./questTRout')
+const questTrackerRout=require('./questTRout');
+const petInventoryRout=require('./petinventoryRout')
+
 
 
 router.use('/player', playerRout); 
@@ -21,6 +23,8 @@ router.use('/users', usersRout);
 router.use('/tasks', taskRout);
 router.use('/taskprogress', taskProgressRout);
 router.use('/player',playerRout)
+router.use('/petinventory', petInventoryRout)
+
 
 
 const jwtMiddleware=require('../middleware/jwtMiddleware');
