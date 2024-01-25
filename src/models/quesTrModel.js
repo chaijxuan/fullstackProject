@@ -19,11 +19,18 @@ module.exports.toCheck = (petId, questId, callback) => {
       return callback(error, null);
     }
 
-    // Assuming that the results array contains the unlockCondition
-    const canCreate = results[0].unlockCondition === 1;
-    callback(null, canCreate);
+    // Check if results is not empty
+    if (results.length > 0) {
+      // Assuming that the results array contains the unlockCondition
+      const canCreate = results[0].unlockCondition === 1;
+      callback(null, canCreate);
+    } else {
+      // No matching record found
+      callback(null, false); // You can also send an appropriate message if needed
+    }
   });
 };
+
 
 
 

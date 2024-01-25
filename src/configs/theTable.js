@@ -27,6 +27,16 @@ DROP TABLE IF EXISTS Player;
 DROP TABLE IF EXISTS playerpetrelation;
 DROP TABLE IF EXISTS quest;
 DROP TABLE IF EXISTS questtracker;
+DROP TABLE IF EXISTS petinventory;
+DROP TABLE IF EXISTS Messages;
+
+CREATE TABLE Messages (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  message_text TEXT NOT NULL,
+  user_id INT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 
 /* Create the User table with the new structure */
 CREATE TABLE User (
@@ -99,6 +109,13 @@ CREATE TABLE playerpetrelation (
     pet_id INT
 );
 
+CREATE TABLE petinventory (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  pet_id INT,
+  obtained_item VARCHAR(255)
+);
+
+
 INSERT INTO taskprogress (user_id, task_id, completion_date, notes) VALUES 
     (2, 1, '2024-01-19 12:00:00', 'NA');
 
@@ -130,10 +147,11 @@ VALUES
     ('Cave Quest', 'Explore the mysterious cave', 1000, 'Hard', 10, 'Magic Sword'),
     ('NewBie Quest', 'For New Player', 0, 'Easy', 10, 'normal sword');
 
-
+    INSERT INTO Messages (message_text, user_id) VALUES
+    ("Hello world!", 1),
+    ("Yummy!", 2),  
+    ("I am the one", 3);
   
-
-
 `;
 
 

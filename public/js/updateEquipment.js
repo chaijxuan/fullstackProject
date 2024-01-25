@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
           };
           // Perform login request
           fetchMethod( currentUrl + `/api/pet/${petId}`, callback, "PUT", data);
+          weaponForm.reset()
     });
 
     headForm.addEventListener("submit", function (event) {
@@ -27,7 +28,9 @@ document.addEventListener("DOMContentLoaded", function () {
           };
           // Perform login request
           fetchMethod( currentUrl + `/api/pet/${petId}`, callback, "PUT", data);
+          headForm.reset()
     });
+    
 
     armorForm.addEventListener("submit", function (event) {
         event.preventDefault();
@@ -37,6 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
           };
           // Perform login request
           fetchMethod( currentUrl + `/api/pet/${petId}`, callback, "PUT", data);
+          armorForm.reset()
     });
 
     const callback = (responseStatus, responseData) => {
@@ -61,7 +65,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        petInventoryList.innerHTML = "";
+        
 
         responseData.forEach((pet) => {
             const displayItem = document.createElement("div");

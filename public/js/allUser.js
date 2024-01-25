@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
         responseData.forEach((user) => {
             const displayItem = document.createElement("div");
             displayItem.className =
-                "col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12 p-3";
+                "col-xl-3 col-lg-3 col-md-4 col-sm-6 col-xs-12 p-3";
             displayItem.innerHTML = `
               <div class="card">
                   <div class="card-body">
@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
                           Email: ${user.email}<br>
                           Points: ${user.total_points}
                       </p>
-                      <a href="taskProgressInfo.html?user_id=${user.user_id}" class="btn btn-primary view-details-btn" data-user-id="${user.user_id}">Task Progress</a>
+                      <a href="taskProgressInfo.html?user_id=${user.user_id}" class="btn btn-primary view-details-btn " data-user-id="${user.user_id}">Task Progress</a>
                       <!-- HTML anchor tag with user email as a parameter -->
                      <a href="playerForUser.html?user_email=${user.email}" class="btn btn-primary view-players-btn" data-user-email="${user.email}">User's Players</a>
 

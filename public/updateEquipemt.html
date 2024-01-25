@@ -66,43 +66,61 @@
         <h1 class="text-center">Update Pet Equipment</h1>
 
         <div class="row">
-            <!-- Weapon Update Form -->
-            <div class="col-md-4">
-                <div class="form-container">
-                    <form id="updateWeaponForm" class="form-group">
-                        <label for="weaponInput">Update Weapon:</label>
-                        <input type="text" id="weaponInput" name="weapon" required class="form-control">
-                        <button type="submit" class="btn btn-primary mt-2">Update Weapon</button>
-                    </form>
-                </div>
-            </div>
-
-            <!-- Head Update Form -->
-            <div class="col-md-4">
-                <div class="form-container">
-                    <form id="updateHeadForm" class="form-group">
-                        <label for="headInput">Update Head:</label>
-                        <input type="text" id="headInput" name="head" required class="form-control">
-                        <button type="submit" class="btn btn-primary mt-2">Update Head</button>
-                    </form>
-                </div>
-            </div>
-
-            <!-- Armor Update Form -->
-            <div class="col-md-4">
-                <div class="form-container">
-                    <form id="updateArmorForm" class="form-group">
-                        <label for="armorInput">Update Armor:</label>
-                        <input type="text" id="armorInput" name="armor" required class="form-control">
-                        <button type="submit" class="btn btn-primary mt-2">Update Armor</button>
-                    </form>
-                </div>
+           <!-- Weapon Update Form -->
+<div class="col-md-4">
+    <div class="form-container">
+        <form id="updateWeaponForm" class="form-group">
+            <label for="weaponInput">Update Weapon:</label>
+            <input type="text" id="weaponInput" name="weapon" required class="form-control">
+            <button type="submit" class="btn btn-primary mt-2">Update Weapon</button>
+        </form>
+        <div id="weaponWarningCard" class="card border-danger mt-3 mb-3 d-none">
+            <div class="card-body text-danger">
+                <p id="weaponWarningText" class="card-text"></p>
             </div>
         </div>
+        
+    </div>
+</div>
+
+<!-- Head Update Form -->
+<div class="col-md-4">
+    <div class="form-container">
+        <form id="updateHeadForm" class="form-group">
+            <label for="headInput">Update Head:</label>
+            <input type="text" id="headInput" name="head" required class="form-control">
+            <button type="submit" class="btn btn-primary mt-2">Update Head</button>
+        </form>
+        <div id="headWarningCard" class="card border-danger mt-3 mb-3 d-none">
+            <div class="card-body text-danger">
+                <p id="headWarningText" class="card-text"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Armor Update Form -->
+<div class="col-md-4">
+    <div class="form-container">
+        <form id="updateArmorForm" class="form-group">
+            <label for="armorInput">Update Armor:</label>
+            <input type="text" id="armorInput" name="armor" required class="form-control">
+            <button type="submit" class="btn btn-primary mt-2">Update Armor</button>
+        </form>
+        <div id="armorWarningCard" class="card border-danger mt-3 mb-3 d-none">
+            <div class="card-body text-danger">
+                <p id="armorWarningText" class="card-text"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+     
 
         <!-- Centered Pet Inventory List -->
         <div class="row mt-4">
-            <div class="col-md-15 mx-auto">
+            <div class="col-md-12">
                 <div id="petInventoryList">
                     <!-- Your existing code for displaying pet inventory -->
                 </div>

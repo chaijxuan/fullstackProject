@@ -11,10 +11,12 @@ const playerRout = require('./playerRout'); // Import usersRout module
 const petRout=require('./petRout');
 const questRout=require('./questRout');
 const questTrackerRout=require('./questTRout');
-const petInventoryRout=require('./petinventoryRout')
+const petInventoryRout=require('./petinventoryRout');
+const messageRoutes = require('./messageRout');
 
 
 
+router.use("/message", messageRoutes);
 router.use('/player', playerRout); 
 router.use('/pet',petRout);
 router.use('/quest',questRout);
