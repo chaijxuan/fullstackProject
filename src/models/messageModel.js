@@ -30,17 +30,17 @@ module.exports.insertSingle = (data, callback) =>
     pool.query(SQLSTATMENT, VALUES, callback);
 }
 
-module.exports.updateById = (data, callback) =>
-{
-    const SQLSTATMENT = `
+module.exports.updateById = (data, callback) => {
+    const SQL_STATEMENT = `
     UPDATE Messages 
-    SET message_text = ?, user_id = ?
-    WHERE id = ?;
+    SET message_text = ?
+    WHERE user_id = ? AND id = ?;
     `;
-    const VALUES = [data.message_text, data.user_id, data.id];
+    const VALUES = [data.message_text, data.userId, data.id];
 
-    pool.query(SQLSTATMENT, VALUES, callback);
+    pool.query(SQL_STATEMENT, VALUES, callback);
 }
+
 
 module.exports.deleteById = (data, callback) =>
 {

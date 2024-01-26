@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
+    const warningCard = document.getElementById("warningCard");
+    const warningText = document.getElementById("warningText");
   const urlSearchParams = new URLSearchParams(window.location.search);
   const petId = urlSearchParams.get("pet_id");
 
@@ -42,7 +44,13 @@ document.addEventListener("DOMContentLoaded", function () {
           return;
       }
 
-      
+
+      if (responseStatus == 201) {
+        console.error("success. Status:", responseStatus);
+        // Display the error message
+        showError("Pet meet the unlock requirement", assignQuestWarning);
+        return;
+    }
       
 
       if (responseData.error) {

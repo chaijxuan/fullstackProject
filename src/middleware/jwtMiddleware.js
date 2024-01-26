@@ -90,3 +90,26 @@ module.exports.verifyToken = (req, res, next) => {
   jwt.verify(token, secretKey, callback);
   
 };
+
+
+module.exports.verifyTokenFromURL = (req, res, next) => {
+  const token = req.params.token;
+
+  if (!token) {
+    return res.status(401).json({ error: 'No token provided' });
+  }
+
+  const callback = (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ error: 'Invalid token' });
+    }
+
+    res.locals.userId = decoded.userId;
+    res.locals.tokenTimestamp = decoded.timestamp;
+    res.locals.email = decoded.email;
+
+    next();
+  };
+
+  jwt.verify(token, secretKey, callback);
+};

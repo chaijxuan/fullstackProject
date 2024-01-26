@@ -1,36 +1,29 @@
 const model = require("../models/messageModel.js");
-const pool = require("../services/db.js");
 
 module.exports.createMessage = (req, res, next) => {
-    if(req.body.message_text == undefined || req.body.message_text == "")
-    {
-        res.status(400).send("Error: message_text is undefined");
-        return;
-    }
-    else if(req.body.user_id == undefined)
-    {
-        res.status(400).send("Error: user_id is undefined");
-        return;
+    const userId = res.locals.userId;
+    const { message_text } = req.body;
+
+    // Check if required data is present
+    if (!userId || !message_text) {
+        return res.status(400).json({ error: "Missing required data" });
     }
 
-    const data = {
-        user_id: req.body.user_id,
-        message_text: req.body.message_text
-    }
+    const messageData = {
+        user_id: userId,  // Fix here: Use userId instead of userId
+        message_text,
+    };
 
-    console.log("data", data);
-
-    const callback = (error, results, fields) => {
+    model.insertSingle(messageData, (error, results) => {
         if (error) {
-            console.error("Error createMessage:", error);
-            res.status(500).json(error);
+            console.error("Error creating message:", error);
+            res.status(500).json({ error: "Internal Server Error" });
         } else {
-            res.status(201).json(results);
+            // Player created successfully
+            res.status(201).json({ message: "Message created successfully", player: results });
         }
-    }
-
-    model.insertSingle(data, callback);
-}
+    });
+};
 
 module.exports.readMessageById = (req, res, next) => {
     const data = {
@@ -47,7 +40,7 @@ module.exports.readMessageById = (req, res, next) => {
                     message: "Message not found"
                 });
             } else {
-                res.status(200).json(results[0]);
+                res.status(200).json({ messages: results });
             }
         }
     }
@@ -69,43 +62,37 @@ module.exports.readAllMessage = (req, res, next) => {
 }
 
 module.exports.updateMessageById = (req, res, next) => {
-    if(req.params.id == undefined)
-    {
-        res.status(400).send("Error: id is undefined");
-        return;
-    }
-    else if(req.body.message_text == undefined || req.body.message_text == "")
-    {
-        res.status(400).send("Error: message_text is undefined or empty");
-        return;
-    }
-    else if(req.body.user_id == undefined)
-    {
-        res.status(400).send("Error: userId is undefined");
-        return;
-    }
+    const { message_text } = req.body;
+    const userId = res.locals.userId;
+    const id = req.params.id; // Assuming the parameter is named 'id'
 
     const data = {
-        id: req.params.id,
-        user_id: req.body.user_id,
-        message_text: req.body.message_text
-    }
+        message_text,
+        userId,
+        id
+    };
 
-    const callback = (error, results, fields) => {
-        if (error) {
-            console.error("Error updateMessageById:", error);
-            res.status(500).json(error);
-        } else {
-            res.status(200).json(results);
+    model.updateById(data, (updateError, result) => {
+        if (updateError) {
+            console.error("Error updating message:", updateError);
+            return res.status(500).json({ error: "Internal Server Error" });
         }
-    }
 
-    model.updateById(data, callback);
-}
+        if (result.affectedRows === 0) {
+            // No rows were affected, indicating that the pet ID might not exist
+            return res.status(404).json({ error: " not found or no changes applied" });
+        }
+
+        // Equipment updated successfully
+        res.status(200).json({ message: "Message updated successfully" });
+    });
+};
+
+
 
 module.exports.deleteMessageById = (req, res, next) => {
     const data = {
-        id: req.params.user_id
+        id:req.params.id,
     }
 
     const callback = (error, results, fields) => {

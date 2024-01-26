@@ -11,11 +11,18 @@ const callback = (responseStatus, responseData) => {
   sendMessageBtn.addEventListener("click", (event) => {
       event.preventDefault();
       const token = localStorage.getItem("token");
-      window.location.href = `chatAction.html?token=${token}`;
+  
+      // Check if token is available
+      if (token) {
+          window.location.href = "chatAction.html";
+      } else {
+          // Handle the case when the token is not available
+          console.error("Token is not available.");
+      }
   });
   
-
-
+  
+  
   const playerList = document.getElementById("playerList");
   responseData.players.forEach((player) => {
     const displayItem = document.createElement("div");
