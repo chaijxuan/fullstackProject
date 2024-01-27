@@ -3,13 +3,13 @@
 const pool = require("../services/db");
 
 module.exports.createPet = (petData, callback) => {
-  const { player_id, pet_name, species } = petData;
+  const { player_id, pet_name, species, photo_url } = petData;
 
   const SQL_STATEMENT = `
-      INSERT INTO Pet (player_id, pet_name, species)
-      VALUES (?, ?, ?);
+      INSERT INTO Pet (player_id, pet_name, species, photo_url)
+      VALUES (?, ?, ?, ?);
     `;
-  const VALUES = [player_id, pet_name, species];
+  const VALUES = [player_id, pet_name, species, photo_url];
 
   pool.query(SQL_STATEMENT, VALUES, callback);
 };

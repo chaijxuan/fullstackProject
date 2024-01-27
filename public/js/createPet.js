@@ -12,6 +12,11 @@ document.addEventListener("DOMContentLoaded", function () {
         if (responseStatus === 201) {
             // Success: Show success message in green
             showStatusMessage("Success", responseData.message, "text-success");
+
+            // Display the pet photo
+            const petPhotoUrl = responseData.pet.photo_url;
+            // Assuming you have an <img> tag with the id "petPhoto"
+            document.getElementById("petPhoto").src = petPhotoUrl;
         } else {
             // Error: Show error message in red
             showStatusMessage("Error", responseData.message, "text-danger");

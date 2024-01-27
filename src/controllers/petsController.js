@@ -2,6 +2,10 @@
 
 const Pet = require("../models/petsModel");
 
+
+
+const fetch = require('node-fetch'); // Adjust the path accordingly if running in a different file
+
 module.exports.createPet = (req, res) => {
   const { pet_name, species } = req.body;
   const player_id = req.params.player_id;
@@ -10,32 +14,81 @@ module.exports.createPet = (req, res) => {
       return res.status(400).json({ error: "Missing required data" });
   }
 
-  const petData = {
-      pet_name,
-      species,
-      player_id,
-  };
+  // Call your preferred method to generate a unique photo URL for each pet
+  generateUniquePhotoUrl()
+    .then(uniquePhotoUrl => {
+      const petData = {
+        pet_name,
+        species,
+        player_id,
+        photo_url: uniquePhotoUrl,
+      };
 
-  Pet.createPet(petData, (error, results, fields) => {
-      if (error) {
+      // Continue with the rest of the existing code
+      Pet.createPet(petData, (error, results, fields) => {
+        if (error) {
           console.error("Error creating pet:", error);
           res.status(500).json({ error: "Error creating pet" });
-      } else {
+        } else {
           const petId = results.insertId;
 
           // Insert into PlayerPetRelation table
           Pet.insertIntoRelation(petData, petId, (error, results, fields) => {
-              if (error) {
-                  console.error("Error inserting into relation:", error);
-                  res.status(500).json({ error: "Error inserting into relation" });
-              } else {
-                  console.log("Inserted into relation successfully");
-                  res.status(201).json({ message: "Pet created successfully", pet: results });
-              }
+            if (error) {
+              console.error("Error inserting into relation:", error);
+              res.status(500).json({ error: "Error inserting into relation" });
+            } else {
+              console.log("Inserted into relation successfully");
+              res.status(201).json({ message: "Pet created successfully", pet: results });
+            }
           });
-      }
-  });
+        }
+      });
+    })
+    .catch(error => {
+      console.error("Error generating unique photo URL:", error);
+      res.status(500).json({ error: "Error generating unique photo URL" });
+    });
 };
+
+
+function generateUniquePhotoUrl() {
+  // Randomly decide whether to fetch a dog, bear, or monkey image
+  const randomValue = Math.random();
+  let imageUrl;
+
+  if (randomValue < 0.33) {
+    // Use the Dog CEO's API to get a random dog image
+    imageUrl = fetch("https://dog.ceo/api/breeds/image/random")
+      .then(response => response.json())
+      .then(data => data.message)
+      .catch(error => {
+        console.error("Error fetching random dog image:", error);
+        // Provide a default image URL in case of an error
+        return "https://example.com/default-photo-url";
+      });
+  } else if (randomValue < 0.66) {
+    // Generate a random HTTP status code for the bear image
+    const randomHttpStatusCode = Math.floor(Math.random() * 1000);
+
+    // Use the https://placebear.com/[code].jpg format to get a bear image based on the random status code
+    imageUrl = Promise.resolve(`https://placebear.com/${randomHttpStatusCode}/${randomHttpStatusCode}.jpg`);
+  } else {
+    // Generate a random HTTP status code for the monkey image
+    const randomHttpStatusCode = Math.floor(Math.random() * 1000);
+
+    // Use the https://www.placemonkeys.com/[code] format to get a monkey image based on the random status code
+    imageUrl = Promise.resolve(`https://www.placemonkeys.com/${randomHttpStatusCode}`);
+  }
+
+  return imageUrl;
+}
+
+
+
+
+
+
 
 
 // Controller function to get a specific pet by pet ID
