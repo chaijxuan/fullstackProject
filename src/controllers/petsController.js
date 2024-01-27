@@ -3,28 +3,40 @@
 const Pet = require("../models/petsModel");
 
 module.exports.createPet = (req, res) => {
-  const petData = req.body;
+  const { pet_name, species } = req.body;
+  const player_id = req.params.player_id;
+
+  if (!pet_name || !species || !player_id) {
+      return res.status(400).json({ error: "Missing required data" });
+  }
+
+  const petData = {
+      pet_name,
+      species,
+      player_id,
+  };
 
   Pet.createPet(petData, (error, results, fields) => {
-    if (error) {
-      console.error("Error creating pet:", error);
-      res.status(500).json({ error: "Error creating pet" });
-    } else {
-      const petId = results.insertId;
+      if (error) {
+          console.error("Error creating pet:", error);
+          res.status(500).json({ error: "Error creating pet" });
+      } else {
+          const petId = results.insertId;
 
-      // Insert into PlayerPetRelation table
-      Pet.insertIntoRelation(petData, petId, (error, results, fields) => {
-        if (error) {
-          console.error("Error inserting into relation:", error);
-        } else { 
-          console.log("Inserted into relation successfully");
-        }
-      });
-
-      res.status(201).json({ message: "Pet created successfully", pet_id: petId });
-    }
+          // Insert into PlayerPetRelation table
+          Pet.insertIntoRelation(petData, petId, (error, results, fields) => {
+              if (error) {
+                  console.error("Error inserting into relation:", error);
+                  res.status(500).json({ error: "Error inserting into relation" });
+              } else {
+                  console.log("Inserted into relation successfully");
+                  res.status(201).json({ message: "Pet created successfully", pet: results });
+              }
+          });
+      }
   });
 };
+
 
 // Controller function to get a specific pet by pet ID
 module.exports.getPetById = (req, res) => {
@@ -158,17 +170,32 @@ module.exports.getInventory = (req, res) => {
 
 module.exports.pvp = (req, res) => {
   const pet1Id = req.params.pet1Id;
-  const pet2Id = req.params.pet2Id;
+  const pet2Id = req.body.pet2Id;
 
   Pet.pvp(pet1Id, pet2Id, (error, result) => {
-    if (error) {
-      console.error('Error performing PvP comparison:', error);
-      res.status(500).json({ error: 'Internal Server Error' });
-    } else {
-      res.status(200).json({ result });
-    }
+      if (error) {
+          console.error('Error performing PvP comparison:', error);
+          res.status(500).json({ error: 'Internal Server Error' });
+      } else {
+          const pet1Name = result[0].pet1_name;
+          const pet2Name = result[0].pet2_name;
+          const winnerMessage = result[0].winner;
+
+          // Check if there is a winner message
+          if (winnerMessage) {
+              res.status(200).json({ winnerMessage, pet1Name, pet2Name });
+          } else {
+              res.status(200).json({ winnerMessage: "It's a tie!", pet1Name, pet2Name });
+          }
+      }
   });
 };
+
+
+
+
+
+
 
 
 module.exports.updatePetEquipment = (req, res) => {
@@ -223,3 +250,22 @@ module.exports.getPetsByPlayerId = (req, res) => {
   });
 };
 
+
+module.exports.getPetNameById = (req, res) => {
+  const petId = req.params.petId;
+
+  // Assuming you have a method to fetch pet details by id from your model
+  Pet.getPetById(petId, (error, result) => {
+      if (error) {
+          console.error("Error fetching pet details:", error);
+          return res.status(500).json({ error: "Error fetching pet details" });
+      }
+
+      if (!result) {
+          return res.status(404).json({ error: "Pet not found" });
+      }
+
+      const petName = result.pet_name;
+      res.status(200).json({ petName });
+  });
+};

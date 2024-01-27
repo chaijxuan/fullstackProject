@@ -26,6 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
               </p>
               <a href="assignQuestForPet.html?pet_id=${pet.id}" class="btn btn-primary update-btn" data-pet-id="${pet.id}">Assign Quest</a>
               <a href="updateEquipemt.html?pet_id=${pet.id}" class="btn btn-primary equipment-btn" data-pet-id="${pet.id}">Equipment</a>
+              <a href="pvp.html?pet_id=${pet.id}" class="btn btn-primary pvp-btn" data-pet-id="${pet.id}">Pet VS Pet</a>
 
           </div>
         `;
@@ -47,6 +48,15 @@ document.addEventListener("DOMContentLoaded", function () {
             event.preventDefault();
             const petId = button.getAttribute("data-pet-id");
             window.location.href = `updateEquipemt.html?pet_id=${petId}`;
+          });
+        });
+
+        const PVPbutton = document.querySelectorAll(".pvp-btn");
+        PVPbutton.forEach((button) => {
+          button.addEventListener("click", (event) => {
+            event.preventDefault();
+            const petId = button.getAttribute("data-pet-id");
+            window.location.href = `pvp.html?pet_id=${petId}`;
           });
         });
       };

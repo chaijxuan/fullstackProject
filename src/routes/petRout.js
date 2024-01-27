@@ -2,14 +2,16 @@ const express = require('express');
 const router = express.Router();
 const controller = require('../controllers/petsController');
 
-// router.post('/', controller.createPet);
-// router.get('/:petId', controller.getPetById);
+ router.post('/:player_id', controller.createPet);
+//router.get('/petname/:petId', controller.getPetById);
 // //router.put('/:petId/update',controller.upgradeThePet);
 // router.delete('/:petId', controller.deletePetAndRelationsController);
 router.get('/petinventory/:pet_id', controller.getInventory);
-// router.post('/pvp/:pet1Id/:pet2Id', controller.pvp);
+router.post('/pvp/:pet1Id', controller.pvp);
+
 router.put('/:petId',controller.updatePetEquipment);
 router.get('/:playerId', controller.getPetsByPlayerId);
+router.get('petname/:petId', controller.getPetNameById)
 
 
 

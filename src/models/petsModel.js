@@ -153,3 +153,15 @@ module.exports.getPetsByPlayerId = (playerId, callback) => {
   const SQL_STATEMENT = 'SELECT * FROM pet WHERE player_id = ?';
   pool.query(SQL_STATEMENT, [playerId], callback);
 };
+
+
+module.exports.getPetById = (petId, callback) => {
+  const SQL_STATEMENT = `
+    SELECT *
+    FROM Pet
+    WHERE id = ?;
+  `;
+
+  const VALUES = [petId];
+  pool.query(SQL_STATEMENT, VALUES, callback);
+};

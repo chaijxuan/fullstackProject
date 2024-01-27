@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 </div>
             `;
             taskList.appendChild(displayItem);
+            
         });
     };
 
