@@ -91,3 +91,10 @@ module.exports.insertIntoPetInventory = (pet_id, obtainedItem, callback) => {
     pool.query(SQL_STATEMENT, [trackerId],callback);
       
   };
+
+
+  // models/questModel.js
+
+
+
+

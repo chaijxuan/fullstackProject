@@ -23,12 +23,12 @@ document.addEventListener("DOMContentLoaded", function () {
                         <p class="card-text">
                             Quest ID: ${quest.id}
                             Quest description: ${quest.description}<br>
-                            Unlock Requirement: ${quest.unlock_requirement}<br>
-                            Points Reward: ${quest.points !== undefined ? quest.points : 0}<br> 
+                            Unlock Requirement: ${quest.unlock_requirements}<br>
+                            Points Reward: ${quest.experience_points_reward !== undefined ? quest.experience_points_reward : 0}<br> 
                             Reward Item: ${quest.reward_item}<br>
                         </p>
                         ${isAdmin ? `
-                            <a href="editQuest.html?task_id=${quest.id}" class="btn btn-primary me-2">Edit</a>
+                            <a href="editQuest.html?quest_id=${quest.id}" class="btn btn-primary me-2">Edit</a>
                             <button id="delete-${quest.id}" class="btn btn-danger">Delete</button>
                         ` : ''}
                     </div>
@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const editBtn = displayItem.querySelector(".btn-primary");
                 editBtn.addEventListener("click", (event) => {
                     const quesId = quest.id;
-                    window.location.href = `editQuest.html?task_id=${quesId}`;
+                    window.location.href = `editQuest.html?quest_id=${quesId}`;
                 });
 
                 const deleteButton = displayItem.querySelector(`#delete-${quest.id}`);
