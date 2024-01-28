@@ -1,8 +1,7 @@
-<!--index.html-->
-
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -102,14 +101,40 @@
       </div>
     </nav>
 
-    <div class="container mt-5">
-      <h1>User List</h1>
-      <ul id="userList"></ul>
+    <div class="container">
+        <h1>Edit Task</h1>
+
+        <!-- Warning Card -->
+        <div id="warningCard" class="d-none alert" role="alert">
+            <p id="warningText"></p>
+        </div>
+
+        <!-- Edit Task Form -->
+        <form id="editTaskForm">
+            <div class="mb-3">
+                <label for="taskTitle" class="form-label">Task Title</label>
+                <input type="text" id="taskTitle" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="taskDescription" class="form-label">Task Description</label>
+                <textarea id="taskDescription" class="form-control" required></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label for="taskPoints" class="form-label">Task Points</label>
+                <input type="number" id="taskPoints" class="form-control" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
     </div>
 
+    <!-- Include your scripts at the end to ensure the DOM is fully loaded -->
     <script src="js/queryCmds.js" type="text/javascript"></script>
     <script src="js/getCurrentURL.js" type="text/javascript"></script>
     <script src="js/userNavbarToggle.js" type="text/javascript"></script>
-    <script src="js/allUser.js" type="text/javascript"></script>
-  </body>
+    <script src="js/editTask.js" type="text/javascript"></script>
+</body>
+
 </html>

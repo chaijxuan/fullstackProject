@@ -6,7 +6,7 @@ const tokenController=require('../middleware/jwtMiddleware')
 router.post('/', controller.createNewTask);
 router.get('/', controller.readAllTask);
 router.get('/:id', controller.readTaskById);
-router.put('/:id',tokenController.verifyToken, controller.updateTaskById);
+router.put('/:id',controller.updateTaskById);
 router.delete('/:id', controller.deleteTaskById);
 
 

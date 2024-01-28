@@ -2,6 +2,7 @@
 // INCLUDES
 //////////////////////////////////////////////////////
 const express = require('express');
+const cookieParser = require('cookie-parser'); // Import cookie-parser
 
 //////////////////////////////////////////////////////
 // CREATE APP
@@ -13,6 +14,7 @@ const app = express();
 //////////////////////////////////////////////////////
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser()); // Use cookie-parser middleware
 
 //////////////////////////////////////////////////////
 // SETUP ROUTES
