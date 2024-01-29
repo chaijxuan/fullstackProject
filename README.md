@@ -33,7 +33,7 @@ Input validation is prioritized to prevent security vulnerabilities and enhance 
 This CA2 project aims to deliver a well-structured and user-centric environment, combining authentication, user interaction, and robust management functionalities for players, pets, and admins.
 
 ## Folder Structure
-
+```
 BED_CA2_CHAIJUNXUAN_p2336077
 |
 bed-ca2-junxuan000
@@ -70,7 +70,7 @@ bed-ca2-junxuan000
 ├── package.json
 ├── package-lock.json
 └── readme.md
-
+```
 
 ## Prerequisites
 
