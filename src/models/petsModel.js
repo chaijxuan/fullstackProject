@@ -68,6 +68,14 @@ module.exports.updatePetPoints = (petId, playerId, callback) => {
 
 
 
+module.exports.selectAll = (callback) =>
+{
+    const SQLSTATMENT = `
+    SELECT * FROM pet;
+    `;
+
+    pool.query(SQLSTATMENT, callback);
+}
 
 
 

@@ -8,7 +8,7 @@ const controller = require('../controllers/petsController');
 // router.delete('/:petId', controller.deletePetAndRelationsController);
 router.get('/petinventory/:pet_id', controller.getInventory);
 router.post('/pvp/:pet1Id', controller.pvp);
-
+router.get('/',controller.getAll);
 router.put('/:petId',controller.updatePetEquipment);
 router.get('/:playerId', controller.getPetsByPlayerId);
 router.get('petname/:petId', controller.getPetNameById)

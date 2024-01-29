@@ -74,3 +74,17 @@ module.exports.deleteQuestTracker = (req, res) => {
     }
   });
 };
+
+
+module.exports.getByPetId = (req, res) => {
+  const petId = req.params.pet_id;
+
+  Quest.getQuestTrackerByPetId(petId, (error, questTracker) => {
+    if (error) {
+      console.error('Error fetching quest tracker:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    } else {
+      res.status(200).json(questTracker);
+    }
+  });
+};

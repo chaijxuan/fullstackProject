@@ -93,7 +93,16 @@ module.exports.insertIntoPetInventory = (pet_id, obtainedItem, callback) => {
   };
 
 
-  // models/questModel.js
+  module.exports.getQuestTrackerByPetId = (petId, callback) => {
+    const SQL_STATEMENT = `
+      SELECT * FROM questtracker
+      WHERE pet_id = ?;
+    `;
+    const VALUES = [petId];
+  
+    pool.query(SQL_STATEMENT, VALUES, callback);
+};
+
 
 
 

@@ -1,5 +1,3 @@
-<!--index.html-->
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -7,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Home</title>
+    <title>Pet List</title>
     <!-- Use Bootstrap 5 CSS -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
@@ -102,14 +100,16 @@
       </div>
     </nav>
 
-    <div class="container mt-5">
-      <h1>User List</h1>
-      <ul id="userList"></ul>
+<div class="container">
+    <h1>Pet List</h1>
+    <div id="petList" class="row">
+        <!-- Pet cards will be dynamically added here -->
     </div>
+</div>
 
-    <script src="js/queryCmds.js" type="text/javascript"></script>
+<script src="js/queryCmds.js" type="text/javascript"></script>
     <script src="js/getCurrentURL.js" type="text/javascript"></script>
     <script src="js/userNavbarToggle.js" type="text/javascript"></script>
-    <script src="js/allUser.js" type="text/javascript"></script>
-  </body>
+    <script src="js/allPet.js" type="text/javascript"></script>
+</body>
 </html>
