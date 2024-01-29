@@ -34,8 +34,6 @@ This CA2 project aims to deliver a well-structured and user-centric environment,
 
 ## Folder Structure
 
-BED_CA2_CHAIJUNXUAN_p2336077
-|
 bed-ca2-junxuan000
 ├── node_modules
 ├── public
@@ -55,14 +53,14 @@ bed-ca2-junxuan000
 │   │   ├── createSchema.js
 │   │   └── theTable.js
 │   ├── controllers
-│   │   ├── ...
+│   │   ...
 │   ├── middlewares
 │   │   ├── bcryptMiddleware.js
 │   │   └── jwtMiddleware.js
 │   ├── models
-│   │   ├── ...
+│   │   ...
 │   ├── routes
-│   │   ├── ...
+│   │   ...
 │   ├── services
 │   │   └── db.js
 │   └── app.js
@@ -70,6 +68,7 @@ bed-ca2-junxuan000
 ├── package.json
 ├── package-lock.json
 └── readme.md
+
 
 
 ## Prerequisites
