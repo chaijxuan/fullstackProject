@@ -1,7 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
+    //to check the userId in order to know whether is admin or the other users
     const userId = localStorage.getItem("userId");
     console.log("userId:", userId);
-    const isAdmin = userId === "1"; // Compare as a string, not a number
+    const isAdmin = userId === "1"; // Compare as a string
 
     const callbackForDelete = (responseStatus, responseData) => {
         console.log("responseStatus:", responseStatus);

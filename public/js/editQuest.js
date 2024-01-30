@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", function () {
             reward_item: rewardItem
         };
 
-        // Assuming messages.id is defined elsewhere in your code
+        
         fetchMethod(currentUrl + `/api/quest/${quest_id}`, callback, "PUT", data);
 
         updateMessageForm.reset();
@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function showSuccessMessage(message) {
         if (successMessage) {
             successMessage.innerText = message;
-            // Optionally, show or hide the success message element based on your UI/UX design
+            
             successMessage.classList.remove("d-none"); // Remove a 'hidden' class, if used
             // Hide the warning text element
             warningCard.classList.add("d-none");

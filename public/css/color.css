@@ -5,12 +5,6 @@ body {
     background-color: #f8f9fa; /* Light gray background color */
   }
     
-  /* Container Background Color */
-  .container {
-    
-    border-radius: 8px; /* Optional: Adds rounded corners to the container */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: Adds a subtle shadow */
-  }
   
   /* Heading Color */
   h1 {

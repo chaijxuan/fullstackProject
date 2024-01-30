@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
             points: taskPoints
         };
 
-        // Assuming messages.id is defined elsewhere in your code
+       
         fetchMethod(currentUrl + `/api/tasks/${taskId}`, callback, "PUT", data);
 
         editTaskForm.reset();

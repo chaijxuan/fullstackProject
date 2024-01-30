@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Display the pet photo
             const petPhotoUrl = responseData.pet.photo_url;
-            // Assuming you have an <img> tag with the id "petPhoto"
+            
             document.getElementById("petPhoto").src = petPhotoUrl;
         } else {
             // Error: Show error message in red

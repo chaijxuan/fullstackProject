@@ -31,8 +31,8 @@ document.addEventListener("DOMContentLoaded", function () {
         if (responseStatus === 200) {
             // Check if there is a winner message
             const winnerMessage = responseData.winnerMessage;
-            const pet1Name = responseData.pet1Name; // Add this line
-            const pet2Name = responseData.pet2Name; // Add this line
+            const pet1Name = responseData.pet1Name; 
+            const pet2Name = responseData.pet2Name; 
     
             if (winnerMessage) {
                 // Display the winner message as a warning with pet names
@@ -54,8 +54,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const data = {};
 
-    // You can remove the following line if you don't need to fetch anything initially
-    // fetchMethod(currentUrl + `/api/pet/${pet1Id}`, callback, "POST", data);
+ 
 
     function showErrorMessage(message) {
         warningText.innerText = message;
@@ -65,9 +64,9 @@ document.addEventListener("DOMContentLoaded", function () {
     function showWarningMessage(message) {
         warningText.innerText = message;
         warningCard.classList.remove("d-none");
-        // Optional: You can set a timeout to hide the warning after a certain duration
+        
         setTimeout(() => {
             warningCard.classList.add("d-none");
-        }, 5000); // Hides the warning after 5 seconds (adjust as needed)
+        }, 5000); // Hides the warning after 5 seconds 
     }
 });

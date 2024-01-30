@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
 
-        // Add Quest button outside the quest list
+        
         // Add Quest button outside the quest list
 if (isAdmin) {
     const addQuestButton = document.createElement("a");
