@@ -1,0 +1,39 @@
+/* color.css */
+
+/* Body Background Color */
+body {
+    background-color: #f8f9fa; /* Light gray background color */
+  }
+    
+  /* Container Background Color */
+  .container {
+    
+    border-radius: 8px; /* Optional: Adds rounded corners to the container */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: Adds a subtle shadow */
+  }
+  
+  /* Heading Color */
+  h1 {
+    color: #343a40; /* Dark gray heading color */
+  }
+  
+  /* Navbar Link Hover Color */
+  .navbar-dark .navbar-nav .nav-link:hover {
+    color: #ffcc00; /* Yellow color on hover */
+  }
+  
+  /* Button Colors */
+  .btn {
+    background-color: #282aa7; /* Bootstrap success button color */
+    color: #ffffff; /* White text on button */
+  }
+  
+  .btn:hover {
+    background-color: #218838; /* Darker green on button hover */
+  }
+  
+  /* Text Color */
+  .text-bg-dark {
+    color: #343a40; /* Dark gray text color */
+  }
+  
