@@ -48,6 +48,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     event.preventDefault();
                     fetchMethod(currentUrl + `/api/quest/${quest.id}`, callbackForDelete, "DELETE", null);
                 });
+                deleteButton.classList.add("btn-danger");
             }
         });
 
