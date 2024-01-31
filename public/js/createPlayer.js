@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const data = {
         playername: character_name,
       };
-      // Perform login request
+      
       fetchMethod( currentUrl + "/api/player", callback, "POST", data, localStorage.getItem("token"));
     });
   });

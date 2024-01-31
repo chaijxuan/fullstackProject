@@ -64,7 +64,7 @@ module.exports.readAllMessage = (req, res, next) => {
 module.exports.updateMessageById = (req, res, next) => {
     const { message_text } = req.body;
     const userId = res.locals.userId;
-    const id = req.params.id; // Assuming the parameter is named 'id'
+    const id = req.params.id; // the parameter is named 'id'
 
     const data = {
         message_text,
