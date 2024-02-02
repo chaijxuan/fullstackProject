@@ -125,7 +125,7 @@ To set up environment variables for your Express.js application, follow these st
    DB_HOST=localhost
    DB_USER=root
    DB_PASSWORD=1234
-   DB_DATABASE=bed_ca2
+   DB_DATABASE=bed
    JWT_SECRET_KEY=your-secret-key
    JWT_EXPIRES_IN=15m
    JWT_ALGORITHM=HS256
