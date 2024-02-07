@@ -193,19 +193,7 @@ Now you can move on to next part below.
    npm run init_tables
    ```
 
-## Commit and Sync Changes
 
-1. Open the Source Control view in VSCode by clicking on the "Source Control" icon in the left sidebar.
-
-2. Review the changes you made to the files.
-
-3. Enter a commit message summarizing your changes in the input field at the top of the Source Control view.
-
-4. Click on "Commit" to commit the changes.
-
-5. Click on "Sync" to push your changes to the remote repository.
-
-   Note: Make sure you have the necessary permissions to push changes to the repository.
 
 
 
