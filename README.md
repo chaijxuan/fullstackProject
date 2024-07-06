@@ -88,7 +88,7 @@ Before running the tests, ensure that the following dependencies are installed:
 
 3. Click on the "Clone Repository" button.
 
-4. In the repository URL input field, enter `https://github.com/ST0503-BED/bed-ca2-junxuan000`.
+4. In the repository URL input field, enter `https://github.com/chaijxuan/fullstackProject`.
 
 5. Choose a local directory where you want to clone the repository.
 
